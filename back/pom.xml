@@ -7,13 +7,13 @@
         <version>2.7.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>fr.episen.sirius.pcc.back</groupId>
-    <artifactId>pcc-back</artifactId>
+    <groupId>sirius.back</groupId>
+    <artifactId>back</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
-    <name>pcc-back</name>
-    <description>Backend for PCC</description>
+    <name>back</name>
+    <description>Backend project</description>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -66,7 +66,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -76,3 +75,5 @@
         </plugins>
     </build>
 </project>
+
+
