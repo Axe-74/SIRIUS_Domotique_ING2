@@ -2,7 +2,7 @@
 
 ## Présentation
 
-**Domotique** est une application complète permettant de gérer une habitation connectée à l'aide de capteurs, d'appareils, d'automatisations et leurs interactions.
+**Domotique** est une application complète permettant de gérer une habitation connectée à l'aide d'objets, d'automatisations et de leurs interactions.
 
 **Fonctionnalités principales :**
 * **Paramétrer et utiliser les capteurs**
@@ -42,13 +42,13 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
 
 # Auteurs
 
+* **Axel JACOMME**
+  * US 1 :
+ 
+
 * **Enzo DUPUIS**
   * US 1 :
 
  
 * **Tom DA ROCHA**
-  * US 1 :
-
- 
-* **Axel JACOMME**
   * US 1 :
