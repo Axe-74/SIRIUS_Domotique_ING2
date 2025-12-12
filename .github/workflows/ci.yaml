@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         working-directory: ./front
@@ -24,7 +24,7 @@ jobs:
         run: npm run build
 
       - name: Upload front artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: front-build
           path: front/build
@@ -36,14 +36,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build backend
         working-directory: ./backend
         run: mvn clean package -DskipTests
 
       - name: Upload backend artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend-jar
           path: backend/target/*.jar
@@ -55,13 +55,13 @@ jobs:
 
     steps:
       - name: Download front build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: front-build
           path: front-dist
 
       - name: Download backend jar
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: backend-jar
           path: backend-dist
