@@ -1,7 +1,6 @@
 package sirius.back.controllers.sample;
 
 import sirius.back.models.sample.Sample;
-import sirius.back.models.sample.SampleType;
 import sirius.back.services.sample.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +25,6 @@ public class SampleController {
     @GetMapping("all")
     public ResponseEntity<List<Sample>> findAllSample(){
         return new ResponseEntity<>(sampleService.findAllSample(), HttpStatus.OK);
-    }
-    @GetMapping("typeSample")
-    public ResponseEntity<List<Sample>> findSamplebyType(@RequestParam SampleType type){
-        return new ResponseEntity<>(sampleService.findSampleType(type), HttpStatus.OK);
     }
 
     @GetMapping("dateSample")

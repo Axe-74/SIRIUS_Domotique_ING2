@@ -1,7 +1,6 @@
 package sirius.back.services.sample;
 
 import sirius.back.models.sample.Sample;
-import sirius.back.models.sample.SampleType;
 import sirius.back.repositories.sample.SampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,6 @@ public class SampleService {
     public Sample findByIdSample(Long idSample) {
         Optional<Sample> optionalSample = sampleRepository.findById(idSample);
         return optionalSample.orElse(null);
-    }
-    public List<Sample> findSampleType(SampleType typeSample){
-        return sampleRepository.findSampleType(typeSample);
     }
 
     public List<Sample> findAllSample(){

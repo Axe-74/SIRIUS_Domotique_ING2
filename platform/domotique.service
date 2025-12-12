@@ -1,0 +1,13 @@
+[Unit]
+Description=SIRIUS API Domotique
+After=network-online.target
+
+[Service]
+Restart=always
+ExecStart=/bin/java -jar /opt/app/backend.jar
+
+User=sirius
+Group=sirius
+
+[Install]
+WantedBy=multi-user.target
