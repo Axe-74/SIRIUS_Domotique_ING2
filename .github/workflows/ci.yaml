@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build backend
-        working-directory: ./backend
+        working-directory: ./back
         run: mvn clean package -DskipTests
 
       - name: Upload backend artifact
