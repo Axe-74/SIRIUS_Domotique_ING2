@@ -32,7 +32,6 @@ jobs:
   build_backend:
     name: Build Spring Backend
     runs-on: episen-domotique
-    needs: build_front
 
     steps:
       - name: Checkout
