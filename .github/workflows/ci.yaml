@@ -67,24 +67,24 @@ jobs:
           path: backend-dist
 
       - name: Copy front via SCP
-        uses: appleboy/scp-action@v0.1.4
+        uses: easingthemes/ssh-deploy@main
         with:
-          host: ${{ vars.INTEG_HOST }}
-          username: ${{ vars.INTEG_USER }}
-          key: ${{ secrets.INTEG_SSH_KEY }}
-          source: "front-dist/*"
-          target: "/var/www/html"
-          rm: true
+          REMOTE_HOST: ${{ vars.INTEG_HOST }}
+          REMOTE_USER: ${{ vars.INTEG_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.INTEG_SSH_KEY }}
+          SOURCE: "front-dist/*"
+          TARGET: "/var/www/html"
+          ARGS: '-zvci --delete'
 
       - name: Copy backend via SCP
-        uses: appleboy/scp-action@v0.1.4
+        uses: easingthemes/ssh-deploy@main
         with:
-          host: ${{ vars.INTEG_HOST }}
-          username: ${{ vars.INTEG_USER }}
-          key: ${{ secrets.INTEG_SSH_KEY }}
-          source: "backend-dist/*.jar"
-          target: "/opt/app/backend.jar"
-          rm: true
+          REMOTE_HOST: ${{ vars.INTEG_HOST }}
+          REMOTE_USER: ${{ vars.INTEG_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.INTEG_SSH_KEY }}
+          SOURCE: "backend-dist/*.jar"
+          TARGET: "/opt/app/backend.jar"
+          ARGS: '-zvci --delete'
 
       - name: Restart backend service
         uses: appleboy/ssh-action@v1.0.3
