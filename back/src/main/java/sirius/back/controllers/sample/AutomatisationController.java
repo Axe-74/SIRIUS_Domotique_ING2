@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("sample")
+@RequestMapping("automatisation")
 public class AutomatisationController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class AutomatisationController {
 //    }
 
     @GetMapping("/Testrequete")
-    public  ResponseEntity<Automatisation> findOldestSample() {
+    public  ResponseEntity<Automatisation> findOldestAutomatisation() {
         return new ResponseEntity<>(automatisationService.findOldestAutomatisation(), HttpStatus.OK);
     }
 

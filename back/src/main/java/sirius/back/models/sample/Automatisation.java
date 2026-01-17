@@ -7,14 +7,17 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "Autmatissation")
+@Table(name = "Autmatisation")
 public class Automatisation {
 
     @Id
-    @Column(name="id_automatsation")
+    @Column(name="id_automatisation")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idSample;
+    private Integer idAutomatisation;
 
-    @Column(name = "etats")
-    private Boolean dateSample;
+    @Column(name = "etat")
+    private Boolean etats;
+
+    @Column(name = "nom")
+    private String nom;
 }
