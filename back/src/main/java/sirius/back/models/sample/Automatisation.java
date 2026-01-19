@@ -20,4 +20,28 @@ public class Automatisation {
 
     @Column(name = "nom")
     private String nom;
+
+    public Integer getid_Automatisation() {
+        return idAutomatisation;
+    }
+
+    public void setid_automatisation(Integer idAutomatisation) {
+        this.idAutomatisation = idAutomatisation;
+    }
+
+    public boolean getetat() {
+        return etats;
+    }
+
+    public void setetat(boolean etat) {
+        this.etats = etat;
+    }
+
+    public String getnom() {
+        return nom;
+    }
+
+    public void setnom(String nom) {
+        this.nom = nom;
+    }
 }
