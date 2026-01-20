@@ -76,4 +76,15 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
 
  
 * **Tom DA ROCHA**
-  * US 1 :
+  * S1 - Rechercher des bibliothèques pour dessiner le plan 2D et gérer l'interactivité
+  * P1 - Création d'un premier jet de l'interface d'une maison
+  * US1 - En tant qu'utilisateur, je veux voir le tracé des murs et les délimitations des pièces, afin de reconnaître ma maison
+  * US2 - En tant qu'utilisateur, je veux voir le nom de chaque pièce superposé sur le plan, afin d'identifier clairement les zones
+  * US3 - En tant qu'utilisateur, je veux voir un message d'information clair si aucune pièce n'a encore été configurée, afin de ne pas penser que l'application a crash
+  * US4 - En tant qu'utilisateur, je veux pouvoir voir l'état actuel d'un objet via une icone d'une pièce afin de savoir s'il est ON ou OFF
+  * US5 - En tant qu'utilisateur, je veux que l'état des pièces soient mise à jour en temps réel afin d'être m'assurer que les informations que je vois soient vraies
+  * US6 - En tant qu'utilisateur, je veux qu'un panneau latéral s'ouvre au clic sur une pièce, afin de préparer l'affichage des éléments sans quitter totalement la vue carte
+  * US7 - En tant qu'utilisateur, je veux voir la liste des noms des objets présents dans la pièce sélectionnée, afin de savoir ce qui y est installé
+  * US8 - En tant qu'utilisateur, je veux voir l'état actuel (ex: "Allumé", "Fermé") à côté de chaque nom dans la liste, afin de vérifier le statut individuel de chaque objet
+  * US9 - En tant qu'utilisateur, je veux consulter l'intensité de fonctionnement d'un objet, afin de me rendre compte de son utilisation
+  * US10 - En tant qu'utilisateur, je veux voir la dernière mesure d'un capteur afin de savoir si je dois modifier sa sensibilité
