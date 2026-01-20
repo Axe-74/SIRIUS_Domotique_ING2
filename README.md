@@ -61,7 +61,18 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
  
 
 * **Enzo DUPUIS**
-  * US 1 :
+  
+  * WI1 — Création d'une Class permettant d'analyser les données des capteurs
+  * WI2 — Module d'injection et de priorisation des données simulées
+  * WI3 — Simuler des scénarios
+  * WI4 — Définir des conditions pour une automatisation
+  * WI5 — Définir des actions pour une automatisation
+  * WI6 — Modifier une automatisation existante
+  * WI7 — Supprimer une automatisation
+  * WI8 — Gestion des profils de simulation (Presets)
+  * WI9 — Utiliser un modèle d’automatisation
+  * WI10 — Parcourir les modèles disponibles
+  * WI11 — Personnaliser un modèle d’automatisation
 
  
 * **Tom DA ROCHA**
