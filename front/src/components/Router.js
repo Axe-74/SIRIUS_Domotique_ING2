@@ -16,7 +16,7 @@ export default function Router () {
                 <Routes>
                     <Route path="/" element={<App />}/>
                     <Route path="/sample" element={<Sample />}/>
-                    <Route path="/mesures_temp" element={<Mesure_Temp_Actuelle />}/>
+                    <Route path="/mesures_temp" element={<MesureTempActuelle />}/>
                     <Route path="/automatisation" element={<Automatisation />}/>
                     <Route path="/maison" element={<Maison />} />
                     <Route path="*" element={<NotFound />}/>
