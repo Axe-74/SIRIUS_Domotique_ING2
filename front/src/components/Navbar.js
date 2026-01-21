@@ -11,8 +11,14 @@ export default function Navbar(){
                     <Link className="nav-link" to="/sample">Sample</Link>
                 </li>
                 <li className="nav-item">
+                    <Link className="nav-link" to="/mesures_temp">Mesures</Link>
+                </li>
+                <li className="nav-item">
                     <Link className="nav-link" to="/maison">Maison</Link>
                 </li>
-            </ul>
-    );
+                <li className="nav-item">
+                    <Link className="nav-link" to="/automatisation">Automatisation</Link>
+                </li>
+             </ul>
+);
 };
