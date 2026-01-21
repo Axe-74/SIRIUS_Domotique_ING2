@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import AutomatisationList from "./automatisation";
 
 export default function Navbar(){
     return (
