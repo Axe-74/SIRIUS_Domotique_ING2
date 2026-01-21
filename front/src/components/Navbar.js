@@ -13,6 +13,12 @@ export default function Navbar(){
                 <li className="nav-item">
                     <Link className="nav-link" to="/mesures_temp">Mesures</Link>
                 </li>
-            </ul>
-    );
+                <li className="nav-item">
+                    <Link className="nav-link" to="/maison">Maison</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/automatisation">Automatisation</Link>
+                </li>
+             </ul>
+);
 };
