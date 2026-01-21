@@ -7,7 +7,4 @@ import sirius.back.models.sample.Piece;
 import sirius.back.models.sample.Sample;
 
 @Repository
-public interface PieceRepository extends JpaRepository<Piece, Long> {
-//    @Query(value="SELECT * FROM Sample AS s ORDER BY s.date_sample DESC LIMIT 1", nativeQuery = true)
-//    Sample findLastSampleByDate();
-}
+public interface PieceRepository extends JpaRepository<Piece, Long> {}
