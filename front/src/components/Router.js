@@ -5,6 +5,7 @@ import Sample from "./Sample";
 import Navbar from "./Navbar";
 import NotFound from "./NotFound";
 import Automatisation from "./automatisation";
+import Maison from "./Maison";
 
 export default function Router () {
     return (
@@ -15,6 +16,7 @@ export default function Router () {
                     <Route path="/" element={<App />}/>
                     <Route path="/sample" element={<Sample />}/>
                     <Route path="/automatisation" element={<Automatisation />}/>
+                    <Route path="/maison" element={<Maison />} />
                     <Route path="*" element={<NotFound />}/>
                 </Routes>
             </div>
