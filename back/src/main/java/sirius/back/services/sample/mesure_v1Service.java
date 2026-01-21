@@ -1,6 +1,5 @@
 package sirius.back.services.sample;
 
-import sirius.back.models.sample.Automatisation;
 import sirius.back.models.sample.mesure_v1;
 import sirius.back.repositories.sample.mesure_v1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ public class mesure_v1Service {
     public List<mesure_v1> findLatestMesure() {
         return mesureRepository.findLatestMesure();
     }
-}
 
     public mesure_v1 findOldestMesure() {
         return mesureRepository.findOldestMesure();

@@ -26,6 +26,8 @@ public class mesure_v1Controller {
     @GetMapping("/last")
     public  ResponseEntity<List<mesure_v1>> findLatestMesure() {
         return new ResponseEntity<>(mesureService.findLatestMesure(), HttpStatus.OK);
+    }
+
     @GetMapping("/one")
     public  ResponseEntity<mesure_v1> findOldestMesure() {
         return new ResponseEntity<>(mesureService.findOldestMesure(), HttpStatus.OK);
