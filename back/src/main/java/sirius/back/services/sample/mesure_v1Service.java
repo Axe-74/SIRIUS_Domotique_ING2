@@ -5,6 +5,8 @@ import sirius.back.repositories.sample.mesure_v1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class mesure_v1Service {
 
@@ -13,5 +15,9 @@ public class mesure_v1Service {
 
     public mesure_v1 ajouterMesure(mesure_v1 nouvelleMesure) {
         return mesureRepository.save(nouvelleMesure);
+    }
+
+    public List<mesure_v1> findLatestMesure() {
+        return mesureRepository.findLatestMesure();
     }
 }
