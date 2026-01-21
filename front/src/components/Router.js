@@ -4,7 +4,7 @@ import App from "./App";
 import Sample from "./Sample";
 import Navbar from "./Navbar";
 import NotFound from "./NotFound";
-import Mesure_Temp_Actuelle from "./Mesure_Temp_Actuelle";
+import MesureTempActuelle from "./MesureTempActuelle";
 import Automatisation from "./automatisation";
 import Maison from "./Maison";
 
