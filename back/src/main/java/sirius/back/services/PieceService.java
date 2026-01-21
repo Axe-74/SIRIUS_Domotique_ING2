@@ -1,14 +1,11 @@
-package sirius.back.services.sample;
+package sirius.back.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sirius.back.models.sample.Piece;
-import sirius.back.models.sample.Sample;
-import sirius.back.repositories.sample.PieceRepository;
-import sirius.back.repositories.sample.SampleRepository;
+import sirius.back.models.Piece;
+import sirius.back.repositories.PieceRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PieceService {

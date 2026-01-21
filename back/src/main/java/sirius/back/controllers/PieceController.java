@@ -1,13 +1,11 @@
-package sirius.back.controllers.sample;
+package sirius.back.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sirius.back.models.sample.Piece;
-import sirius.back.models.sample.Sample;
-import sirius.back.services.sample.PieceService;
-import sirius.back.services.sample.SampleService;
+import sirius.back.models.Piece;
+import sirius.back.services.PieceService;
 
 import java.util.List;
 

@@ -1,14 +1,11 @@
-package sirius.back.services.sample.analyse_sensor; // Vérifie que le package est bon
+package sirius.back.services.analyse_sensor; // Vérifie que le package est bon
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import sirius.back.models.sample.Automatisation;
-import sirius.back.models.sample.mesure_v1;
-import sirius.back.services.sample.AutomatisationService;
-import sirius.back.services.sample.mesure_v1Service;
-import java.util.List;
+import sirius.back.services.AutomatisationService;
+import sirius.back.services.mesure_v1Service;
 
 
 @Component

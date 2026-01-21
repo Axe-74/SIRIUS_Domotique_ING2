@@ -1,14 +1,12 @@
-package sirius.back.services.sample;
+package sirius.back.services;
 
 import org.springframework.transaction.annotation.Transactional;
-import sirius.back.models.sample.Automatisation;
-import sirius.back.models.sample.mesure_v1;
-import sirius.back.repositories.sample.AutomatisationRepository;
-import sirius.back.repositories.sample.mesure_v1Repository;
-import sirius.back.repositories.sample.SampleRepository;
+import sirius.back.models.Automatisation;
+import sirius.back.models.mesure_v1;
+import sirius.back.repositories.AutomatisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sirius.back.services.sample.mesure_v1Service;
+
 import java.util.List;
 
 @Service

@@ -1,4 +1,4 @@
-package sirius.back.services.sample.analyse_sensor;
+package sirius.back.services.analyse_sensor;
 
 import java.util.ArrayList;
 import java.util.List;

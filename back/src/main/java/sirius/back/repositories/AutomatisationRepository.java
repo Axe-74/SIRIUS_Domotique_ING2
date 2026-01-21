@@ -1,8 +1,8 @@
-package sirius.back.repositories.sample;
+package sirius.back.repositories;
 
 
 import org.springframework.data.repository.query.Param;
-import sirius.back.models.sample.Automatisation;
+import sirius.back.models.Automatisation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

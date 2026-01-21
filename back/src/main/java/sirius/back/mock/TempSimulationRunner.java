@@ -3,8 +3,8 @@ package sirius.back.mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import sirius.back.models.sample.mesure_v1;
-import sirius.back.services.sample.mesure_v1Service;
+import sirius.back.models.mesure_v1;
+import sirius.back.services.mesure_v1Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

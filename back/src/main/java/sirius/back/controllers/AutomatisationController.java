@@ -1,14 +1,12 @@
-package sirius.back.controllers.sample;
+package sirius.back.controllers;
 
-import sirius.back.models.sample.Automatisation;
-import sirius.back.models.sample.Sample;
-import sirius.back.services.sample.AutomatisationService;
+import sirius.back.models.Automatisation;
+import sirius.back.services.AutomatisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin(origins = "*" ) // Autorise React
 @RestController

@@ -1,7 +1,7 @@
-package sirius.back.services.sample;
+package sirius.back.services;
 
-import sirius.back.models.sample.mesure_v1;
-import sirius.back.repositories.sample.mesure_v1Repository;
+import sirius.back.models.mesure_v1;
+import sirius.back.repositories.mesure_v1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

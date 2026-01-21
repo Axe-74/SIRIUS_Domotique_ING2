@@ -1,4 +1,4 @@
-package sirius.back.services.sample.analyse_sensor;
+package sirius.back.services.analyse_sensor;
 
 public class Analyse_temp_executer {
     public static void main(String[] args) throws InterruptedException {

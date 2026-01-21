@@ -1,4 +1,4 @@
-package sirius.back.models.sample;
+package sirius.back.models;
 
 import lombok.Data;
 

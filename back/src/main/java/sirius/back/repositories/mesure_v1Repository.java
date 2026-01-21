@@ -1,10 +1,9 @@
-package sirius.back.repositories.sample;
+package sirius.back.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import sirius.back.models.sample.Automatisation;
-import sirius.back.models.sample.mesure_v1;
+import sirius.back.models.mesure_v1;
 
 import java.util.List;
 

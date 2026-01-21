@@ -1,9 +1,9 @@
-package sirius.back.services.sample.analyse_sensor;
+package sirius.back.services.analyse_sensor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import sirius.back.services.sample.AutomatisationService;
+import sirius.back.services.AutomatisationService;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,9 +1,9 @@
-package sirius.back.services.sample;
+package sirius.back.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sirius.back.models.sample.Capteur_testpiece;
-import sirius.back.repositories.sample.Capteur_testpieceRepository;
+import sirius.back.models.Capteur_testpiece;
+import sirius.back.repositories.Capteur_testpieceRepository;
 
 import java.util.List;
 
