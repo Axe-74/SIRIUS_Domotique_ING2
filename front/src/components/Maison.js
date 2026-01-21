@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Stage, Layer, Rect, Text, Circle, Group } from 'react-konva';
 import '../styles/Maison.css';
+import {GET_PIECES} from "../constants/back";
 
 var LARGEUR_ZONE = 800;
 var HAUTEUR_ZONE = 600;
@@ -8,22 +9,11 @@ var ESPACE = 20;
 var RATIO = 40;
 
 var CAPTEURS = [
-    { id: '1', pieceId: '1', nom: 'Capteur1', type: 'Température', etat: 'OFF' },
-    { id: '2', pieceId: '1', nom: 'Capteur2', type: 'Lumière', etat: 'ON' },
-    { id: '3', pieceId: '2', nom: 'Capteur3', type: 'Lumière', etat: 'ON' },
-    { id: '4', pieceId: '3', nom: 'Capteur4', type: 'Mouvement', etat: 'ON' },
-    { id: '5', pieceId: '1', nom: 'Capteur5', type: 'Mouvement', etat: 'ON' },
-];
-
-var PIECES = [
-    { id: '1', width: 4.5, height: 4.5, nom: 'Salon', x: 0, y: 0 },
-    { id: '3', width: 4.5, height: 2.5, nom: 'Cuisine', x: 0, y: 0 },
-    { id: '2', width: 2, height: 1,  nom: 'WC', x: 0, y: 0 },
-    { id: '4', width: 4.5, height: 2, nom: 'Salle de Bain', x: 0, y: 0 },
-    { id: '5', width: 4.5, height: 3, nom: 'Chambre1', x: 0, y: 0 },
-    { id: '6', width: 4.5, height: 3, nom: 'Chambre2', x: 0, y: 0 },
-    { id: '7', width: 2, height: 6, nom: 'Couloir', x: 0, y: 0 },
-    { id: '8', width: 2, height: 1.8, nom: 'Entrée', x: 0, y: 0 },
+    { id_capteur: 1, id_piece: 1, nom: 'Capteur1', type: 'Température', etat: 'OFF' },
+    { id_capteur: 2, id_piece: 1, nom: 'Capteur2', type: 'Lumière', etat: 'ON' },
+    { id_capteur: 3, id_piece: 2, nom: 'Capteur3', type: 'Lumière', etat: 'ON' },
+    { id_capteur: 4, id_piece: 3, nom: 'Capteur4', type: 'Mouvement', etat: 'ON' },
+    { id_capteur: 5, id_piece: 1, nom: 'Capteur5', type: 'Mouvement', etat: 'ON' },
 ];
 
 
@@ -77,8 +67,19 @@ function verifierEtPlacer(listePieces) {
 
 export default function Maison() {
 
-    var [pieces, setPieces] = useState(verifierEtPlacer(PIECES));
+    var [pieces, setPieces] = useState([]);
     var [idSelectionne, setIdSelectionne] = useState(null);
+
+    useEffect(function() {
+        fetch(GET_PIECES)
+            .then(function(reponse) {
+                return reponse.json();
+            })
+            .then(function(donnees) {
+                var piecesCalculees = verifierEtPlacer(donnees);
+                setPieces(piecesCalculees);
+            });
+    }, []);
 
     var messageVide = null;
     if (pieces.length === 0) {
@@ -102,16 +103,16 @@ export default function Maison() {
                 <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
                     <Layer>
                         {pieces.map((piece, index) => {
-                            var capteurs = CAPTEURS.filter(capteur => capteur.pieceId === piece.id);
+                            var capteurs = CAPTEURS.filter(capteur => capteur.id_piece === piece.id_piece);
 
                             return (
                                 <Group
-                                    key={piece.id}
+                                    key={piece.id_piece}
                                     draggable
                                     x={piece.x}
                                     y={piece.y}
 
-                                    onClick={() => setIdSelectionne(piece.id)}
+                                    onClick={() => setIdSelectionne(piece.id_piece)}
 
                                     dragBoundFunc={(pos) => {
                                         var newX = pos.x;
@@ -142,7 +143,7 @@ export default function Maison() {
                                     <Rect
                                         width={piece.width}
                                         height={piece.height}
-                                        fill={idSelectionne === piece.id ? "purple" : "blue"}
+                                        fill={idSelectionne === piece.id_piece ? "purple" : "blue"}
                                         stroke="black"
                                         strokeWidth={2}
                                     />
@@ -162,7 +163,7 @@ export default function Maison() {
 
                                         return (
                                             <Circle
-                                                key={capteur.id}
+                                                key={capteur.id_capteur}
                                                 x={positionX}
                                                 y={positionY}
                                                 radius={6}
