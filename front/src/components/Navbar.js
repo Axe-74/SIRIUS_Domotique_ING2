@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import AutomatisationList from "./automatisation";
 
 export default function Navbar(){
     return (
@@ -13,6 +14,9 @@ export default function Navbar(){
                 <li className="nav-item">
                     <Link className="nav-link" to="/maison">Maison</Link>
                 </li>
-            </ul>
-    );
+                <li className="nav-item">
+                    <Link className="nav-link" to="/automatisation">Automatisation</Link>
+                </li>
+             </ul>
+);
 };
