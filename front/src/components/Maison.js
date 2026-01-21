@@ -1,20 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { Stage, Layer, Rect, Text, Circle, Group } from 'react-konva';
 import '../styles/Maison.css';
-import {GET_PIECES} from "../constants/back";
+import {GET_PIECES, GET_CAPTEURS_TESTPIECE} from "../constants/back";
 
 var LARGEUR_ZONE = 800;
 var HAUTEUR_ZONE = 600;
 var ESPACE = 20;
 var RATIO = 40;
-
-var CAPTEURS = [
-    { id_capteur: 1, id_piece: 1, nom: 'Capteur1', type: 'Température', etat: 'OFF' },
-    { id_capteur: 2, id_piece: 1, nom: 'Capteur2', type: 'Lumière', etat: 'ON' },
-    { id_capteur: 3, id_piece: 2, nom: 'Capteur3', type: 'Lumière', etat: 'ON' },
-    { id_capteur: 4, id_piece: 3, nom: 'Capteur4', type: 'Mouvement', etat: 'ON' },
-    { id_capteur: 5, id_piece: 1, nom: 'Capteur5', type: 'Mouvement', etat: 'ON' },
-];
 
 
 function verifierEtPlacer(listePieces) {
@@ -23,7 +15,7 @@ function verifierEtPlacer(listePieces) {
     var currentX = ESPACE;
     var currentY = ESPACE;
 
-    return listePieces.map((piece) => {
+    return listePieces.map(function(piece) {
 
         var largeurPixels = piece.width * RATIO;
         var hauteurPixels = piece.height * RATIO;
@@ -68,6 +60,7 @@ function verifierEtPlacer(listePieces) {
 export default function Maison() {
 
     var [pieces, setPieces] = useState([]);
+    var [capteurs_testpiece, setCapteurs_testpiece] = useState([]);
     var [idSelectionne, setIdSelectionne] = useState(null);
 
     useEffect(function() {
@@ -79,6 +72,14 @@ export default function Maison() {
                 var piecesCalculees = verifierEtPlacer(donnees);
                 setPieces(piecesCalculees);
             });
+
+        fetch(GET_CAPTEURS_TESTPIECE)
+            .then(function(reponse) {
+                return reponse.json();
+            })
+        .then(function(donnees) {
+            setCapteurs_testpiece(donnees);
+        })
     }, []);
 
     var messageVide = null;
@@ -102,9 +103,10 @@ export default function Maison() {
             <div className="zone-plan-maison">
                 <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
                     <Layer>
-                        {pieces.map((piece, index) => {
-                            var capteurs = CAPTEURS.filter(capteur => capteur.id_piece === piece.id_piece);
-
+                        {pieces.map(function(piece, index) {
+                            var capteursDansPiece = capteurs_testpiece.filter(function(c) {
+                                return c.id_piece === piece.id_piece;
+                            });
                             return (
                                 <Group
                                     key={piece.id_piece}
@@ -157,17 +159,18 @@ export default function Maison() {
                                         align="center"
                                         verticalAlign="middle"
                                     />
-                                    {capteurs.map((capteur, indexCapteur) => {
+                                    {capteursDansPiece.map(function(capteur, indexCapteur) {
                                         var positionX = 15 + (indexCapteur * 18);
                                         var positionY = 15;
 
                                         return (
                                             <Circle
-                                                key={capteur.id_capteur}
+                                                key={capteur.id_capteur_testpiece}
                                                 x={positionX}
                                                 y={positionY}
                                                 radius={6}
-                                                fill={capteur.etat === 'ON' ? "green" : "red"}                                                stroke="white"
+                                                fill={capteur.etat === 'ON' ? "green" : "red"}
+                                                stroke="white"
                                                 strokeWidth={1}
                                             />
                                         );
