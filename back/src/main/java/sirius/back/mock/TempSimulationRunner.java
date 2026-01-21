@@ -73,7 +73,8 @@ public class TempSimulationRunner implements CommandLineRunner {
             }
 
             try {
-                long sleepTime = intervalleMinutes * 60 * 10L; //min en ms
+                long sleepTime = intervalleMinutes * 60 * 100L; //min en ms
+                //défini à 6s (avec *100L à la place de *1000L) pour être utilisable durant les démos
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 break;

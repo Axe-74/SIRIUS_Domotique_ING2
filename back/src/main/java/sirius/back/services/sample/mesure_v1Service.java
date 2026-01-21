@@ -18,6 +18,10 @@ public class mesure_v1Service {
         return mesureRepository.save(nouvelleMesure);
     }
 
+    public List<mesure_v1> findLatestMesure() {
+        return mesureRepository.findLatestMesure();
+    }
+}
 
     public mesure_v1 findOldestMesure() {
         return mesureRepository.findOldestMesure();
