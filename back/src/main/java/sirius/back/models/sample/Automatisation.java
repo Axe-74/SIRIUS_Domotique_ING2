@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "Autmatisation")
+@Table(name = "Automatisation")
 public class Automatisation {
 
     @Id
@@ -20,6 +20,10 @@ public class Automatisation {
 
     @Column(name = "nom")
     private String nom;
+
+
+    @Column(name = "seuil_de_declenchement")
+    private double seuilDeDeclenchement;
 
     public Integer getid_Automatisation() {
         return idAutomatisation;
@@ -43,5 +47,13 @@ public class Automatisation {
 
     public void setnom(String nom) {
         this.nom = nom;
+    }
+
+    public double getseuil_de_declenchement() {
+        return seuilDeDeclenchement;
+    }
+
+    public void setseuil_de_declenchement(double seuilDeDeclenchement) {
+        this.seuilDeDeclenchement = seuilDeDeclenchement;
     }
 }

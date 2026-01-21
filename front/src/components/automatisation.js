@@ -1,55 +1,76 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Table, Container, Badge } from 'react-bootstrap';
-import { GET_AUTOMATISATION } from "../constants/back"; // Assure-toi que ce chemin est bon
+import { Table, Container, Badge, Spinner } from 'react-bootstrap';
+import { GET_AUTOMATISATION } from "../constants/back";
 
 export default function Automatisation() {
-    // 1. J'utilise 'automatisations' (minuscule) pour la liste, c'est plus propre
     const [automatisations, setAutomatisations] = useState([]);
-
-    // 2. Fonction pour récupérer les données
-    const fetchAutomatisations = async () => {
-        try {
-            const response = await axios.get(GET_AUTOMATISATION);
-            setAutomatisations(response.data);
-        } catch (error) {
-            alert("Erreur lors du chargement : " + error);
-            console.error(error);
-        }
-    }
-
-    // 3. IMPORTANT : useEffect déclenche la récupération au chargement de la page
-    useEffect(() => {
-        fetchAutomatisations();
-    }, []); // Le tableau vide [] assure que ça ne tourne qu'une seule fois
+    const [loading, setLoading] = useState(true);
+    const chargerDonnees = () => {
+        fetch(GET_AUTOMATISATION)
+            .then(function(reponse) {
+                if (!reponse.ok) {
+                    throw new Error("Erreur HTTP " + reponse.status);
+                }
+                return reponse.json();
+            })
+            .then(function(donnees) {
+                setAutomatisations(donnees);
+                setLoading(false);
+            })
+            .catch(function(erreur) {
+                console.error("Erreur fetch :", erreur);
+            });
+    };
+    useEffect(function() {
+        chargerDonnees();
+        const intervalId = setInterval(chargerDonnees, 5000);// temps de refresh
+        return function cleanup() {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     return (
         <Container className="mt-5">
-            <h2 className="mb-4">Liste des Automatisations</h2>
+            <h2 className="mb-4">
+                Liste des Automatisations
+            </h2>
 
             <Table striped bordered hover responsive className="shadow-sm">
                 <thead className="bg-dark text-white">
                 <tr>
-                    <th>#ID</th>
+                    <th>ID</th>
                     <th>Nom de l'automatisation</th>
-                    <th>État actuel</th>
+                    <th>Statut</th>
+                    <th>Seuil de déclenchement</th>
                 </tr>
                 </thead>
                 <tbody>
-                {/* 4. Ici j'utilise bien la variable déclarée en haut 'automatisations' */}
-                {automatisations.map((auto) => (
-                    <tr key={auto.idAutomatisation}>
-                        <td>{auto.idAutomatisation}</td>
-                        <td>{auto.nom}</td>
-                        <td>
-                            {auto.etats ? (
-                                <Badge bg="success">Actif (ON)</Badge>
-                            ) : (
-                                <Badge bg="secondary">Inactif (OFF)</Badge>
-                            )}
+                {loading ? (
+                    <tr>
+                        <td colSpan="4" className="text-center">
+                            <Spinner animation="border" size="sm" /> Chargement initial...
                         </td>
                     </tr>
-                ))}
+                ) : automatisations.length === 0 ? (
+                    <tr>
+                        <td colSpan="4" className="text-center">Aucune automatisation trouvée.</td>
+                    </tr>
+                ) : (
+                    automatisations.map((auto) => (
+                        <tr key={auto.idAutomatisation}>
+                            <td>{auto.idAutomatisation}</td>
+                            <td>{auto.nom}</td>
+                            <td>
+                                {auto.etats ? (
+                                    <Badge bg="success">Déclenché (ON)</Badge>
+                                ) : (
+                                    <Badge bg="secondary">Non déclenché (OFF)</Badge>
+                                )}
+                            </td>
+                            <td>{auto.seuil_de_declenchement +" C°" }</td>
+                        </tr>
+                    ))
+                )}
                 </tbody>
             </Table>
         </Container>

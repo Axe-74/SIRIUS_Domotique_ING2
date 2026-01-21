@@ -15,6 +15,7 @@ public interface AutomatisationRepository extends JpaRepository<Automatisation, 
 
     @Query(value = "SELECT * FROM Automatisation AS a ORDER BY a.id_automatisation ",nativeQuery = true)
     List<Automatisation> findAllAutomatisationByDate();
+
     @Query(value = "UPDATE Autmatissation SET etats = :nouvelEtat WHERE id_automatsation = :id", nativeQuery = true)
     void forcerUpdateEtat(@Param("id") Integer id, @Param("nouvelEtat") Boolean nouvelEtat);
 
