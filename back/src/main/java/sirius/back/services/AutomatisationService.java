@@ -38,7 +38,7 @@ public class AutomatisationService {
         }
 
         double tempActuelle = dernierReleve.getValeur();
-        //System.out.println("Température : " + tempActuelle);
+        System.out.println("Température : " + tempActuelle);
 
         // On parcourt toutes les automatisations
         for (Automatisation auto : autoall) {
@@ -48,26 +48,26 @@ public class AutomatisationService {
             // Cas température en dessous du seuil de déclenchement
             if (tempActuelle <= seuilDeDeclenchement) {
                 if (!Boolean.TRUE.equals(auto.getEtats())) {
-                    //System.out.println("Température basse, activation de " + auto.getnom());
+                    System.out.println("Température basse, activation de " + auto.getnom());
                     auto.setEtats(true);
                     automatisationRepository.saveAndFlush(auto);
                 } else {
-                    //System.out.println("Température basse, " + auto.getnom() + " déja activée");
+                    System.out.println("Température basse, " + auto.getnom() + " déja activée");
                 }
             }
 
             // Cas température au-dessus du seuil de déclenchement
             else if (tempActuelle > seuilDeDeclenchement) {
                 if (Boolean.TRUE.equals(auto.getEtats())) {
-                    //System.out.println("Température a un seuil normale: Désactivation de " + auto.getnom());
+                    System.out.println("Température a un seuil normale: Désactivation de " + auto.getnom());
                     auto.setEtats(false);
                     automatisationRepository.saveAndFlush(auto);
                 } else {
-                    //System.out.println("Température normale mais " + auto.getnom() + " déja désactivé");
+                    System.out.println("Température normale mais " + auto.getnom() + " déja désactivé");
                 }
             }
             else {
-                //System.out.println("Aucun changement pour " + auto.getnom());
+                System.out.println("Aucun changement pour " + auto.getnom());
             }
         }
     }
