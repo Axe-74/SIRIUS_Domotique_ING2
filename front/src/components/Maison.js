@@ -73,13 +73,23 @@ export default function Maison() {
                 setPieces(piecesCalculees);
             });
 
-        fetch(GET_CAPTEURS_TESTPIECE)
-            .then(function(reponse) {
-                return reponse.json();
-            })
-        .then(function(donnees) {
-            setCapteurs_testpiece(donnees);
-        })
+        function rafraichirCapteurs() {
+            fetch(GET_CAPTEURS_TESTPIECE)
+                .then(function(reponse) {
+                    return reponse.json();
+                })
+                .then(function(donnees) {
+                    setCapteurs_testpiece(donnees);
+                })
+        }
+        rafraichirCapteurs();
+
+        var intervalle = setInterval(rafraichirCapteurs, 1000);
+
+        return function() {
+            clearInterval(intervalle);
+        };
+
     }, []);
 
     var messageVide = null;
