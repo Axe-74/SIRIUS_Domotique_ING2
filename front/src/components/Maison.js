@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { Stage, Layer, Rect, Text, Circle, Group } from 'react-konva';
 import '../styles/Maison.css';
-import {GET_PIECES, GET_CAPTEURS_TESTPIECE} from "../constants/back";
+import {GET_PIECES, GET_CAPTEURS_TESTPIECE, UPDATE_PIECE} from "../constants/back";
 
-var LARGEUR_ZONE = 800;
-var HAUTEUR_ZONE = 600;
+var LARGEUR_ZONE = 780;
+var HAUTEUR_ZONE = 530;
 var ESPACE = 20;
 var RATIO = 40;
 
@@ -62,6 +62,7 @@ export default function Maison() {
     var [pieces, setPieces] = useState([]);
     var [capteurs_testpiece, setCapteurs_testpiece] = useState([]);
     var [idSelectionne, setIdSelectionne] = useState(null);
+    var [modifications, setModifications] = useState(false);
 
     useEffect(function() {
         fetch(GET_PIECES)
@@ -83,14 +84,32 @@ export default function Maison() {
                 })
         }
         rafraichirCapteurs();
-
-        var intervalle = setInterval(rafraichirCapteurs, 1000);
-
+        var intervalle = setInterval(rafraichirCapteurs, 5000);
         return function() {
             clearInterval(intervalle);
         };
 
     }, []);
+
+    function sauvegarderPosition() {
+        pieces.map(function(piece) {
+            var pieceAEnvoyer = {
+                ...piece,
+                x: piece.x / RATIO,
+                y: piece.y / RATIO,
+                width: piece.width / RATIO,
+                height: piece.height / RATIO
+            };
+
+            fetch(UPDATE_PIECE, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(pieceAEnvoyer)
+            });
+        });
+
+        setModifications(false);
+    }
 
     var messageVide = null;
     if (pieces.length === 0) {
@@ -108,8 +127,7 @@ export default function Maison() {
 
     return (
         <div className="interface-maison">
-            <h2>Plan de la Maison</h2>
-
+            <h3>Plan de la Maison</h3>
             <div className="zone-plan-maison">
                 <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
                     <Layer>
@@ -150,6 +168,8 @@ export default function Maison() {
                                         copiePieces[index].x = e.target.x();
                                         copiePieces[index].y = e.target.y();
                                         setPieces(copiePieces);
+
+                                        setModifications(true);
                                     }}
                                 >
                                     <Rect
@@ -192,6 +212,24 @@ export default function Maison() {
                     </Layer>
                 </Stage>
             </div>
+            {modifications === true && (
+                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                    <button
+                        onClick={sauvegarderPosition}
+                        style={{
+                            padding: '5px 20px',
+                            backgroundColor: 'green',
+                            color: 'white',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            borderRadius: '5px'
+                        }}
+                    >
+                        Sauvegarder
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
