@@ -3,25 +3,25 @@ import { Stage, Layer, Rect, Text, Circle, Group } from 'react-konva';
 import '../styles/Maison.css';
 import {GET_PIECES, GET_CAPTEURS_TESTPIECE, UPDATE_PIECE} from "../constants/back";
 
-var LARGEUR_ZONE = 780;
-var HAUTEUR_ZONE = 530;
-var ESPACE = 20;
-var RATIO = 40;
+const LARGEUR_ZONE = 780;
+const HAUTEUR_ZONE = 530;
+const ESPACE = 20;
+const RATIO = 40;
 
 
 function verifierEtPlacer(listePieces) {
 
-    var hauteurMax = 0;
-    var currentX = ESPACE;
-    var currentY = ESPACE;
+    let hauteurMax = 0;
+    let currentX = ESPACE;
+    let currentY = ESPACE;
 
     return listePieces.map(function(piece) {
 
-        var largeurPixels = piece.width * RATIO;
-        var hauteurPixels = piece.height * RATIO;
+        const largeurPixels = piece.width * RATIO;
+        const hauteurPixels = piece.height * RATIO;
 
-        var xPixels = piece.x * RATIO;
-        var yPixels = piece.y * RATIO;
+        const xPixels = piece.x * RATIO;
+        const yPixels = piece.y * RATIO;
 
         if (xPixels !== 0 || yPixels !== 0) {
             return {
@@ -43,7 +43,7 @@ function verifierEtPlacer(listePieces) {
             hauteurMax = 0;
         }
 
-        var pieceCalculee = {
+        const pieceCalculee = {
             ...piece,
             width: largeurPixels,
             height: hauteurPixels,
@@ -59,11 +59,11 @@ function verifierEtPlacer(listePieces) {
 
 export default function Maison() {
 
-    var [pieces, setPieces] = useState([]);
-    var [capteurs_testpiece, setCapteurs_testpiece] = useState([]);
-    var [idSelectionne, setIdSelectionne] = useState(null);
-    var [modifications, setModifications] = useState(false);
-    var [etageActuel, setEtageActuel] = useState(0);
+    const [pieces, setPieces] = useState([]);
+    const [capteurs_testpiece, setCapteurs_testpiece] = useState([]);
+    const [idSelectionne, setIdSelectionne] = useState(null);
+    const [modifications, setModifications] = useState(false);
+    const [etageActuel, setEtageActuel] = useState(0);
 
     useEffect(function() {
         fetch(GET_PIECES)
@@ -71,7 +71,7 @@ export default function Maison() {
                 return reponse.json();
             })
             .then(function(donnees) {
-                var piecesCalculees = verifierEtPlacer(donnees);
+                const piecesCalculees = verifierEtPlacer(donnees);
                 setPieces(piecesCalculees);
             });
 
@@ -85,7 +85,7 @@ export default function Maison() {
                 })
         }
         rafraichirCapteurs();
-        var intervalle = setInterval(rafraichirCapteurs, 5000);
+        const intervalle = setInterval(rafraichirCapteurs, 5000);
         return function() {
             clearInterval(intervalle);
         };
@@ -94,7 +94,7 @@ export default function Maison() {
 
     function sauvegarderPosition() {
         pieces.map(function(piece) {
-            var pieceAEnvoyer = {
+            const pieceAEnvoyer = {
                 ...piece,
                 x: piece.x / RATIO,
                 y: piece.y / RATIO,
@@ -112,7 +112,7 @@ export default function Maison() {
         setModifications(false);
     }
 
-    var listeEtages = [0];
+    const listeEtages = [0];
     pieces.forEach(function(piece) {
         if (listeEtages.includes(piece.etage) === false) {
             listeEtages.push(piece.etage);
@@ -120,13 +120,13 @@ export default function Maison() {
     });
     listeEtages.sort();
 
-    var listeEtagesInversee = [...listeEtages].reverse();
+    const listeEtagesInversee = [...listeEtages].reverse();
 
-    var piecesAffichees = pieces.filter(function(piece) {
+    const piecesAffichees = pieces.filter(function (piece) {
         return piece.etage === etageActuel;
     });
 
-    var messageVide = null;
+    let messageVide = null;
     if (pieces.length === 0) {
         messageVide = (
             <Text
@@ -162,7 +162,7 @@ export default function Maison() {
                     <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
                         <Layer>
                             {piecesAffichees.map(function(piece, index) {
-                                var capteursDansPiece = capteurs_testpiece.filter(function(c) {
+                                const capteursDansPiece = capteurs_testpiece.filter(function (c) {
                                     return c.id_piece === piece.id_piece;
                                 });
                                 return (
@@ -175,8 +175,8 @@ export default function Maison() {
                                         onClick={() => setIdSelectionne(piece.id_piece)}
 
                                         dragBoundFunc={(pos) => {
-                                            var newX = pos.x;
-                                            var newY = pos.y;
+                                            let newX = pos.x;
+                                            let newY = pos.y;
 
                                             if (newX < 0) {
                                                 newX = 0;
@@ -194,7 +194,7 @@ export default function Maison() {
                                         }}
 
                                         onDragEnd={(e) => {
-                                            var nouvelleListe = pieces.map(function(p) {
+                                            const nouvelleListe = pieces.map(function (p) {
                                                 if (p.id_piece === piece.id_piece) {
                                                     return {
                                                         ...p,
@@ -228,8 +228,8 @@ export default function Maison() {
                                             verticalAlign="middle"
                                         />
                                         {capteursDansPiece.map(function(capteur, indexCapteur) {
-                                            var positionX = 15 + (indexCapteur * 18);
-                                            var positionY = 15;
+                                            const positionX = 15 + (indexCapteur * 18);
+                                            const positionY = 15;
 
                                             return (
                                                 <Circle
