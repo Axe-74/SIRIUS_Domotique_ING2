@@ -1,0 +1,12 @@
+/* styles/Maison.css */
+
+.interface-maison {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.zone-plan-maison {
+    display: inline-block;
+    border: 2px solid #000000;
+    background-color: #fff;
+}

@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+.App-smarthome {
+  height: 40vmin;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -17,8 +22,8 @@
     outline: none;          /* Supprime le contour au focus */
     resize: none;           /* Empêche le redimensionnement */
     background: transparent;/* Fond transparent */
-    width: 100%;            /* Largeur complète (optionnel) */
-    font-size: 5rem;        /* Taille du texte */
+    width: 80%;            /* Largeur complète (optionnel) */
+    font-size: 3rem;        /* Taille du texte */
     text-align: center;
     color: #222;            /* Couleur du texte */
     font-family: inherit; /* Même police que le reste */
@@ -33,6 +38,15 @@
     right: 10px;
     width: 120px;         /* Ajuste la taille si tu veux */
 }
+
+.smarthome {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    width: 600px;         /* Ajuste la taille si tu veux */
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
