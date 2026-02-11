@@ -143,30 +143,15 @@ export default function Maison() {
     return (
         <div className="interface-maison">
             <h3>Plan de la Maison</h3>
-            <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <div style={{
-                    position: 'absolute',
-                    left: '310px',
-                    top: '2px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
+            <div className="conteneur-maison-boutons">
+                <div className="conteneur-etage">
 
                     {listeEtagesInversee.map(function(etage) {
                         return (
                             <button
                                 key={etage}
                                 onClick={() => setEtageActuel(etage)}
-                                style={{
-                                    marginBottom: '8px',
-                                    padding: '10px 10px',
-                                    backgroundColor: etage === etageActuel ? 'darkcyan' : 'lightgrey',
-                                    color: etage === etageActuel ? 'white' : 'black',
-                                    border: 'none',
-                                    borderRadius: '2px',
-                                    cursor: 'pointer',
-                                    fontSize: '18px',
-                                }}
+                                className={etage === etageActuel ? "bouton-etage actuel" : "bouton-etage"}
                             >
                                 {etage}
                             </button>
@@ -267,19 +252,9 @@ export default function Maison() {
                 </div>
             </div>
             {modifications === true && (
-                <div style={{ display: 'flex', justifyContent: 'center'}}>
-                    <button
+                <div className="conteneur-sauvegarde">
+                    <button className="bouton-sauvegarde"
                         onClick={sauvegarderPosition}
-                        style={{
-                            marginTop: '5px',
-                            padding: '5px 20px',
-                            backgroundColor: 'green',
-                            color: 'white',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontSize: '18px',
-                            borderRadius: '5px'
-                        }}
                     >
                         Sauvegarder
                     </button>
