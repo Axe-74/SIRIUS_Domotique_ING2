@@ -13,6 +13,9 @@ public class PieceService {
     @Autowired
     private PieceRepository pieceRepository;
 
+    public Piece updatePiece(Piece piece){
+        return pieceRepository.save(piece);
+    }
 
     public List<Piece> findAllPiece(){
         return pieceRepository.findAll();

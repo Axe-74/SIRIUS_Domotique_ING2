@@ -29,4 +29,7 @@ public class Piece {
 
     @Column(name = "y")
     private Float y;
+
+    @Column(name= "etage")
+    private Integer etage;
 }

@@ -1,27 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import { Stage, Layer, Rect, Text, Circle, Group } from 'react-konva';
 import '../styles/Maison.css';
-import {GET_PIECES, GET_CAPTEURS_TESTPIECE} from "../constants/back";
+import {GET_PIECES, GET_CAPTEURS_TESTPIECE, UPDATE_PIECE} from "../constants/back";
 
-var LARGEUR_ZONE = 800;
-var HAUTEUR_ZONE = 600;
-var ESPACE = 20;
-var RATIO = 40;
+const LARGEUR_ZONE = 780;
+const HAUTEUR_ZONE = 530;
+const ESPACE = 20;
+const RATIO = 40;
 
 
 function verifierEtPlacer(listePieces) {
 
-    var hauteurMax = 0;
-    var currentX = ESPACE;
-    var currentY = ESPACE;
+    let hauteurMax = 0;
+    let currentX = ESPACE;
+    let currentY = ESPACE;
 
     return listePieces.map(function(piece) {
 
-        var largeurPixels = piece.width * RATIO;
-        var hauteurPixels = piece.height * RATIO;
+        const largeurPixels = piece.width * RATIO;
+        const hauteurPixels = piece.height * RATIO;
 
-        var xPixels = piece.x * RATIO;
-        var yPixels = piece.y * RATIO;
+        const xPixels = piece.x * RATIO;
+        const yPixels = piece.y * RATIO;
 
         if (xPixels !== 0 || yPixels !== 0) {
             return {
@@ -43,7 +43,7 @@ function verifierEtPlacer(listePieces) {
             hauteurMax = 0;
         }
 
-        var pieceCalculee = {
+        const pieceCalculee = {
             ...piece,
             width: largeurPixels,
             height: hauteurPixels,
@@ -59,9 +59,11 @@ function verifierEtPlacer(listePieces) {
 
 export default function Maison() {
 
-    var [pieces, setPieces] = useState([]);
-    var [capteurs_testpiece, setCapteurs_testpiece] = useState([]);
-    var [idSelectionne, setIdSelectionne] = useState(null);
+    const [pieces, setPieces] = useState([]);
+    const [capteurs_testpiece, setCapteurs_testpiece] = useState([]);
+    const [idSelectionne, setIdSelectionne] = useState(null);
+    const [modifications, setModifications] = useState(false);
+    const [etageActuel, setEtageActuel] = useState(0);
 
     useEffect(function() {
         fetch(GET_PIECES)
@@ -69,20 +71,62 @@ export default function Maison() {
                 return reponse.json();
             })
             .then(function(donnees) {
-                var piecesCalculees = verifierEtPlacer(donnees);
+                const piecesCalculees = verifierEtPlacer(donnees);
                 setPieces(piecesCalculees);
             });
 
-        fetch(GET_CAPTEURS_TESTPIECE)
-            .then(function(reponse) {
-                return reponse.json();
-            })
-        .then(function(donnees) {
-            setCapteurs_testpiece(donnees);
-        })
+        function rafraichirCapteurs() {
+            fetch(GET_CAPTEURS_TESTPIECE)
+                .then(function(reponse) {
+                    return reponse.json();
+                })
+                .then(function(donnees) {
+                    setCapteurs_testpiece(donnees);
+                })
+        }
+        rafraichirCapteurs();
+        const intervalle = setInterval(rafraichirCapteurs, 5000);
+        return function() {
+            clearInterval(intervalle);
+        };
+
     }, []);
 
-    var messageVide = null;
+    function sauvegarderPosition() {
+        pieces.map(function(piece) {
+            const pieceAEnvoyer = {
+                ...piece,
+                x: piece.x / RATIO,
+                y: piece.y / RATIO,
+                width: piece.width / RATIO,
+                height: piece.height / RATIO
+            };
+
+            fetch(UPDATE_PIECE, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(pieceAEnvoyer)
+            });
+        });
+
+        setModifications(false);
+    }
+
+    const listeEtages = [0];
+    pieces.forEach(function(piece) {
+        if (listeEtages.includes(piece.etage) === false) {
+            listeEtages.push(piece.etage);
+        }
+    });
+    listeEtages.sort();
+
+    const listeEtagesInversee = [...listeEtages].reverse();
+
+    const piecesAffichees = pieces.filter(function (piece) {
+        return piece.etage === etageActuel;
+    });
+
+    let messageVide = null;
     if (pieces.length === 0) {
         messageVide = (
             <Text
@@ -98,90 +142,124 @@ export default function Maison() {
 
     return (
         <div className="interface-maison">
-            <h2>Plan de la Maison</h2>
+            <h3>Plan de la Maison</h3>
+            <div className="conteneur-maison-boutons">
+                <div className="conteneur-etage">
 
-            <div className="zone-plan-maison">
-                <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
-                    <Layer>
-                        {pieces.map(function(piece, index) {
-                            var capteursDansPiece = capteurs_testpiece.filter(function(c) {
-                                return c.id_piece === piece.id_piece;
-                            });
-                            return (
-                                <Group
-                                    key={piece.id_piece}
-                                    draggable
-                                    x={piece.x}
-                                    y={piece.y}
+                    {listeEtagesInversee.map(function(etage) {
+                        return (
+                            <button
+                                key={etage}
+                                onClick={() => setEtageActuel(etage)}
+                                className={etage === etageActuel ? "bouton-etage actuel" : "bouton-etage"}
+                            >
+                                {etage}
+                            </button>
+                        )
+                    })}
+                </div>
+                <div className="zone-plan-maison">
+                    <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
+                        <Layer>
+                            {piecesAffichees.map(function(piece, index) {
+                                const capteursDansPiece = capteurs_testpiece.filter(function (c) {
+                                    return c.id_piece === piece.id_piece;
+                                });
+                                return (
+                                    <Group
+                                        key={piece.id_piece}
+                                        draggable
+                                        x={piece.x}
+                                        y={piece.y}
 
-                                    onClick={() => setIdSelectionne(piece.id_piece)}
+                                        onClick={() => setIdSelectionne(piece.id_piece)}
 
-                                    dragBoundFunc={(pos) => {
-                                        var newX = pos.x;
-                                        var newY = pos.y;
+                                        dragBoundFunc={(pos) => {
+                                            let newX = pos.x;
+                                            let newY = pos.y;
 
-                                        if (newX < 0) {
-                                            newX = 0;
-                                        }
-                                        if (newX > LARGEUR_ZONE - piece.width) {
-                                            newX = LARGEUR_ZONE - piece.width;
-                                        }
-                                        if (newY < 0) {
-                                            newY = 0;
-                                        }
-                                        if (newY > HAUTEUR_ZONE - piece.height) {
-                                            newY = HAUTEUR_ZONE - piece.height;
-                                        }
-                                        return { x: newX, y: newY };
-                                    }}
+                                            if (newX < 0) {
+                                                newX = 0;
+                                            }
+                                            if (newX > LARGEUR_ZONE - piece.width) {
+                                                newX = LARGEUR_ZONE - piece.width;
+                                            }
+                                            if (newY < 0) {
+                                                newY = 0;
+                                            }
+                                            if (newY > HAUTEUR_ZONE - piece.height) {
+                                                newY = HAUTEUR_ZONE - piece.height;
+                                            }
+                                            return { x: newX, y: newY };
+                                        }}
 
-                                    onDragEnd={(e) => {
-                                        var copiePieces = [...pieces];
-                                        copiePieces[index].x = e.target.x();
-                                        copiePieces[index].y = e.target.y();
-                                        setPieces(copiePieces);
-                                    }}
-                                >
-                                    <Rect
-                                        width={piece.width}
-                                        height={piece.height}
-                                        fill={idSelectionne === piece.id_piece ? "purple" : "blue"}
-                                        stroke="black"
-                                        strokeWidth={2}
-                                    />
-                                    <Text
-                                        text={piece.nom}
-                                        fontSize={18}
-                                        fontStyle="bold"
-                                        fill="white"
-                                        width={piece.width}
-                                        height={piece.height}
-                                        align="center"
-                                        verticalAlign="middle"
-                                    />
-                                    {capteursDansPiece.map(function(capteur, indexCapteur) {
-                                        var positionX = 15 + (indexCapteur * 18);
-                                        var positionY = 15;
+                                        onDragEnd={(e) => {
+                                            const nouvelleListe = pieces.map(function (p) {
+                                                if (p.id_piece === piece.id_piece) {
+                                                    return {
+                                                        ...p,
+                                                        x: e.target.x(),
+                                                        y: e.target.y()
+                                                    };
+                                                } else {
+                                                    return p;
+                                                }
+                                            });
 
-                                        return (
-                                            <Circle
-                                                key={capteur.id_capteur_testpiece}
-                                                x={positionX}
-                                                y={positionY}
-                                                radius={6}
-                                                fill={capteur.etat === 'ON' ? "green" : "red"}
-                                                stroke="white"
-                                                strokeWidth={1}
-                                            />
-                                        );
-                                    })}
-                                </Group>
-                            );
-                        })}
-                        {messageVide}
-                    </Layer>
-                </Stage>
+                                            setPieces(nouvelleListe);
+                                            setModifications(true);
+                                        }}
+                                    >
+                                        <Rect
+                                            width={piece.width}
+                                            height={piece.height}
+                                            fill={idSelectionne === piece.id_piece ? "purple" : "blue"}
+                                            stroke="black"
+                                            strokeWidth={2}
+                                        />
+                                        <Text
+                                            text={piece.nom}
+                                            fontSize={18}
+                                            fontStyle="bold"
+                                            fill="white"
+                                            width={piece.width}
+                                            height={piece.height}
+                                            align="center"
+                                            verticalAlign="middle"
+                                        />
+                                        {capteursDansPiece.map(function(capteur, indexCapteur) {
+                                            const positionX = 15 + (indexCapteur * 18);
+                                            const positionY = 15;
+
+                                            return (
+                                                <Circle
+                                                    key={capteur.id_capteur_testpiece}
+                                                    x={positionX}
+                                                    y={positionY}
+                                                    radius={6}
+                                                    fill={capteur.etat === 'ON' ? "green" : "red"}
+                                                    stroke="white"
+                                                    strokeWidth={1}
+                                                />
+                                            );
+                                        })}
+                                    </Group>
+                                );
+                            })}
+                            {messageVide}
+                        </Layer>
+                    </Stage>
+                </div>
             </div>
+            {modifications === true && (
+                <div className="conteneur-sauvegarde">
+                    <button className="bouton-sauvegarde"
+                        onClick={sauvegarderPosition}
+                    >
+                        Sauvegarder
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
