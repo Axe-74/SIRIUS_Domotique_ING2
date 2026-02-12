@@ -93,7 +93,7 @@ export default function Maison() {
     }, []);
 
     function sauvegarderPosition() {
-        pieces.map(function(piece) {
+        pieces.forEach(function(piece) {
             const pieceAEnvoyer = {
                 ...piece,
                 x: piece.x / RATIO,
