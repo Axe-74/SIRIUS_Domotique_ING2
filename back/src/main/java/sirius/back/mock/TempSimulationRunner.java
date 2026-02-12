@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import sirius.back.models.SimulationConfigTemp;
 import sirius.back.models.mesure_v1;
 import sirius.back.repositories.SimulationConfigTempRepository;
+import sirius.back.services.anomalies.AnomalieTempService;
 import sirius.back.services.mesure_v1Service;
 
 import java.time.LocalDateTime;
@@ -85,13 +86,16 @@ public class TempSimulationRunner implements CommandLineRunner {
                 nouvelleMesure.setValeur((float) tempArrondie);
                 nouvelleMesure.setId_capteur(config.getIdCapteurTemp());
                 nouvelleMesure.setDate(LocalDateTime.now());
-
-                mesureService.ajouterMesure(nouvelleMesure);
-
-                System.out.println("[" + LocalTime.now() + "] Sauvegardé en BD : " + tempArrondie + "°C");
+                if (AnomalieTempService.verifierSeuils(nouvelleMesure)){
+                    mesureService.ajouterMesure(nouvelleMesure);
+                    System.out.println("[" + LocalTime.now() + "] Sauvegardé en BD : " + tempArrondie + "°C");
+                }
+                else {
+                    System.err.println("Valeur hors de l'intervalle cohérent, pas enregistrée en BD.");
+                }
 
             } else {
-                System.out.println("Pas sauvegardé en BD");
+                System.out.println("Pas sauvegardé en BD (envoi_bd = false)");
             }
 
             try {
