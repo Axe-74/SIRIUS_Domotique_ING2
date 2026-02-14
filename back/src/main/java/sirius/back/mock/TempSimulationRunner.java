@@ -3,9 +3,12 @@ package sirius.back.mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import sirius.back.models.ConfigTempAnomalies;
 import sirius.back.models.SimulationConfigTemp;
 import sirius.back.models.mesure_v1;
+import sirius.back.repositories.ConfigTempAnomaliesRepository;
 import sirius.back.repositories.SimulationConfigTempRepository;
+import sirius.back.repositories.mesure_v1Repository;
 import sirius.back.services.anomalies.AnomalieTempService;
 import sirius.back.services.mesure_v1Service;
 
@@ -21,7 +24,16 @@ public class TempSimulationRunner implements CommandLineRunner {
     private mesure_v1Service mesureService;
 
     @Autowired
+    private mesure_v1Repository mesureRepository;
+
+    @Autowired
     private SimulationConfigTempRepository configRepository;
+
+    @Autowired
+    private ConfigTempAnomaliesRepository anomalieConfigRepo;
+
+    @Autowired
+    private AnomalieTempService anomalieService;
 
     private Double tempActuelle = null;
 
@@ -38,7 +50,7 @@ public class TempSimulationRunner implements CommandLineRunner {
                 SimulationConfigTemp config = configRepository.findTopByEtatSimulationTrueOrderByIdSimulationDesc();
 
                 if (config == null) {
-                    System.out.println("⚠️ Aucune config active trouvée. Pause...");
+                    System.out.println("Aucune config active trouvée. Nouvel essai dans 5s. ");
                     Thread.sleep(5000);
                     continue;
                 }
@@ -86,12 +98,24 @@ public class TempSimulationRunner implements CommandLineRunner {
                 nouvelleMesure.setValeur((float) tempArrondie);
                 nouvelleMesure.setId_capteur(config.getIdCapteurTemp());
                 nouvelleMesure.setDate(LocalDateTime.now());
-                if (AnomalieTempService.verifierSeuils(nouvelleMesure)){
-                    mesureService.ajouterMesure(nouvelleMesure);
-                    System.out.println("[" + LocalTime.now() + "] Sauvegardé en BD : " + tempArrondie + "°C");
-                }
-                else {
-                    System.err.println("Valeur hors de l'intervalle cohérent, pas enregistrée en BD.");
+
+                ConfigTempAnomalies configAnomalie = anomalieConfigRepo.findTopByEtatActiviteTrueOrderByIdDesc();
+
+                boolean valeurAcceptee = true ;
+
+                if (configAnomalie != null && configAnomalie.getEtatActivite()) {
+                    if (!anomalieService.verifierSeuils(nouvelleMesure, configAnomalie)) {
+                        valeurAcceptee = false;
+                        System.err.println("Valeur hors de l'intervalle cohérent, pas enregistrée en BD.");
+                    }
+
+                    if (valeurAcceptee) {
+                        List<mesure_v1> historique = mesureRepository.recupererHistorique(config.getIdCapteurTemp(),configAnomalie.getNbTermesMoyenne());
+                        if (!anomalieService.verifierCoherence(nouvelleMesure, configAnomalie, historique)) {
+                            valeurAcceptee = false;
+                            System.err.println("Ecart hors de l'intervalle cohérent, pas enregistrée en BD.");
+                        }
+                    }
                 }
 
             } else {
