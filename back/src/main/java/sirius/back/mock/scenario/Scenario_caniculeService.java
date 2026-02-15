@@ -12,11 +12,25 @@ import java.util.Random;
 public class Scenario_caniculeService {
 
     @Autowired
-    private SimulationConfigTempRepository configRepository;
+    SimulationConfigTempRepository configRepository;
 
     private final Random random = new Random();
 
     private Long idAncienneConfig = null;
+    private Long idConfigCanicule = null;
+
+    public void lancerScenarioTemporaire(long dureeEnMs) {
+        activerScenario();
+        new Thread(() -> {
+            try {
+                System.out.println("Scénario canicule en cours");
+                Thread.sleep(dureeEnMs);
+                restaurerAncienneConfig();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     @Transactional
     public void activerScenario() {
@@ -26,18 +40,15 @@ public class Scenario_caniculeService {
 
         if (configActuelle != null) {
             if (configActuelle.getIdSimulation() != 6) {
-                this.idAncienneConfig = configActuelle.getIdSimulation();
+                idAncienneConfig = configActuelle.getIdSimulation();
                 configActuelle.setEtatSimulation(false);
                 configRepository.save(configActuelle);
                 System.out.println("Configuration" + idAncienneConfig + "mise en pause");
             }
         }
-        if (configRepository.existsById(6L)) {
-            configRepository.deleteById(6L);
-            configRepository.flush();
-        }
+
         SimulationConfigTemp config = new SimulationConfigTemp();
-        config.setIdSimulation(6L);
+
         config.setNomConfig("Scenario Canicule");
         config.setEtatSimulation(true);
         config.setEnvoiBd(true);
@@ -52,7 +63,38 @@ public class Scenario_caniculeService {
         config.setVariationMaximum(0.1);
         config.setInfluenceHeure(0.1);
 
-        configRepository.save(config);
-        System.out.println("Configuration canicule enregistrée");
+        SimulationConfigTemp configCanicule = configRepository.save(config);
+        idConfigCanicule = configCanicule.getIdSimulation();
+        System.out.println("Nouvelle Configuration canicule active avec l'ID" + idConfigCanicule);
+    }
+
+    @Transactional
+    public void restaurerAncienneConfig() {
+        System.out.println("Arrêt du scénario canicule");
+
+        if (idConfigCanicule != null )
+            if (configRepository.existsById(idConfigCanicule)) {
+                configRepository.deleteById(idConfigCanicule);
+                configRepository.flush();
+                System.out.println("Configuration Canicule" + idConfigCanicule + "supprimée");
+                idConfigCanicule = null;
+            }else{
+                System.out.println("Aucune configuration canicule");
+        } else {
+            System.out.println("L'id de la configuration de canicule est null");
+        }
+
+        if (idAncienneConfig != null) {
+            SimulationConfigTemp ancienneConfig = configRepository.findById(idAncienneConfig).orElse(null);
+
+            if (ancienneConfig != null) {
+                ancienneConfig.setEtatSimulation(true);
+                configRepository.save(ancienneConfig);
+                System.out.println("Ancienne configuration (" + idAncienneConfig + ") restaurée");
+            } else {
+                System.out.println("Impossible de restaurer l'ancienne configuration");
+            }
+            idAncienneConfig = null;
+        }
     }
 }
