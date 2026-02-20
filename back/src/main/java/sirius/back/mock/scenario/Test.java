@@ -13,10 +13,10 @@ public class Test implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        try {
-            scenarioService.lancerScenarioTemporaire(10000);
-        } catch (Exception e) {
-            System.err.println("Erreur dans le lancement du scénario:" + e.getMessage());
-        }
+//        try {
+//            scenarioService.lancerScenarioTemporaire(10000);
+//        } catch (Exception e) {
+//            System.err.println("Erreur dans le lancement du scénario:" + e.getMessage());
+//        }
     }
 }

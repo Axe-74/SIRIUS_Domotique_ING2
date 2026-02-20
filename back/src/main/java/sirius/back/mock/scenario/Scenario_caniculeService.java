@@ -53,7 +53,7 @@ public class Scenario_caniculeService {
         config.setEtatSimulation(true);
         config.setEnvoiBd(true);
         config.setIdCapteurTemp(1);
-        config.setIntervalleMinutes(1.0);
+        config.setIntervalleMinutes(0.1);
 
         double base = 35.0 + (random.nextDouble() * 5);
         config.setTempCible1(base - 8.0);
