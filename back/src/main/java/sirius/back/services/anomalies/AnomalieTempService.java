@@ -50,14 +50,14 @@ public class AnomalieTempService {
 
         if(valeur < config.getSeuilMinAbsolu()){
             String message = "Anomalie détectée. Température anormalement basse :" + valeur + "°C.";
-            System.err.println("Anomalie détectée." + message);
+            System.err.println(message);
             creerAlerte(mesure.getId_capteur(), "SEUIL_MIN", message);
             return false ;
         }
 
         if(valeur > config.getSeuilMaxAbsolu()){
             String message = "Anomalie détectée. Température anormalement haute :" + valeur + "°C.";
-            System.err.println("Anomalie détectée." + message);
+            System.err.println(message);
             creerAlerte(mesure.getId_capteur(), "SEUIL_MAX", message);
             return false;
         }
