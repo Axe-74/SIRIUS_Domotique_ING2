@@ -6,6 +6,8 @@ import NotFound from "./NotFound";
 import MesureTempActuelle from "./MesureTempActuelle";
 import Automatisation from "./automatisation";
 import Maison from "./Maison";
+import Simulation_Journee from "./Simulation_Journee";
+
 
 export default function Router () {
     return (
@@ -16,6 +18,7 @@ export default function Router () {
                     <Route path="/" element={<App />}/>
                     <Route path="/mesures_temp" element={<MesureTempActuelle />}/>
                     <Route path="/automatisation" element={<Automatisation />}/>
+                    <Route path="/simulation_journee" element={<Simulation_Journee />}/>
                     <Route path="/maison" element={<Maison />} />
                     <Route path="*" element={<NotFound />}/>
                 </Routes>
