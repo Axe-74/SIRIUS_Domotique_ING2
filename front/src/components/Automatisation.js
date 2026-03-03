@@ -17,7 +17,9 @@ export default function Automatisation() {
     };
 
     useEffect(() => {
-        recuperationDonnees();
+        recuperationDonnees()
+        const intervalId = setInterval(recuperationDonnees, 5000);
+        return () => clearInterval(intervalId);
     }, []);
 
 

@@ -4,7 +4,7 @@ import App from "./App";
 import Navbar from "./Navbar";
 import NotFound from "./NotFound";
 import MesureTempActuelle from "./MesureTempActuelle";
-import Automatisation from "./automatisation";
+import Automatisation from "./Automatisation";
 import Maison from "./Maison";
 
 export default function Router () {
