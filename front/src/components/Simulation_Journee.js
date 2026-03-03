@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import '../styles/Scenario.css';
+import '../styles/SimulationJournee.css';
 
 export default function Simulation_Journee() {
 
@@ -13,14 +13,14 @@ export default function Simulation_Journee() {
     };
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <div className="simulation-container">
             <h1>Simulation d'une journée de mesures en 2 minutes</h1>
             <h1>↓</h1>
 
 
             <button
                 onClick={LancementSimulation}
-                className="btn-scenario btn-launch"
+                className="btn-simulation"
             >
                 Lancer la Simulation
             </button>
