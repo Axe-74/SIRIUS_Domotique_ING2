@@ -27,4 +27,9 @@ public class AutomatisationController {
     public  ResponseEntity<List<Automatisation>> findAllAutomatisationByDate() {
         return new ResponseEntity<>(automatisationService.findAllAutomatisationByDate(), HttpStatus.OK);
     }
+
+    @GetMapping("/allWithObjects")
+    public  ResponseEntity<List<Automatisation>> findAllAutomatisationByObjects() {
+        return new ResponseEntity<>(automatisationService.findAllAutomationWithObjets(), HttpStatus.OK);
+    }
 }

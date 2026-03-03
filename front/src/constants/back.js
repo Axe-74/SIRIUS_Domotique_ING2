@@ -1,7 +1,7 @@
 export const LOCAL_HOST = '/api';
 export const GET_LAST_MESURE = LOCAL_HOST + "/mesures/last";
 export const LOCAL_HOST_AUTOMATISATION = LOCAL_HOST +'/automatisation/';
-export const GET_AUTOMATISATION = LOCAL_HOST_AUTOMATISATION + 'all';
+export const GET_AUTOMATISATION = LOCAL_HOST_AUTOMATISATION + 'allWithObjects';
 export const UPDATE_AUTOMATISATION = LOCAL_HOST_AUTOMATISATION + 'update';
 export const LOCAL_HOST_PIECE = LOCAL_HOST + '/piece/'
 export const LOCAL_HOST_CAPTEUR_TESTPIECE = LOCAL_HOST + '/capteur_testpiece/'

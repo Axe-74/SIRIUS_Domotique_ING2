@@ -30,6 +30,10 @@ public class AutomatisationService {
         return automatisationRepository.findAllAutomatisationByDate();
     }
 
+    public List<Automatisation> findAllAutomationWithObjets() {
+        return automatisationRepository.findAllAutomationWithObjets();
+    }
+
 
     @Transactional
     public void verifierEtMettreAJourAutomatisation() {

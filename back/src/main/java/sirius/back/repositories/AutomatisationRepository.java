@@ -19,6 +19,9 @@ public interface AutomatisationRepository extends JpaRepository<Automatisation, 
     @Query(value = "UPDATE Autmatissation SET etats = :nouvelEtat WHERE id_automatsation = :id", nativeQuery = true)
     void forcerUpdateEtat(@Param("id") Integer id, @Param("nouvelEtat") Boolean nouvelEtat);
 
+    @Query("SELECT DISTINCT a FROM Automatisation a LEFT JOIN FETCH a.objetsRelies ORDER BY a.idAutomatisation")
+    List<Automatisation> findAllAutomationWithObjets();
+
 }
 
 
