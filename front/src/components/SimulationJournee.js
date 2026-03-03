@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import '../styles/SimulationJournee.css';
 
-export default function Simulation_Journee() {
+export default function SimulationJournee() {
 
     const LancementSimulation = () => {
         axios.post("http://localhost:8080/api/simulation_acceleree/journee").then((response) => {
