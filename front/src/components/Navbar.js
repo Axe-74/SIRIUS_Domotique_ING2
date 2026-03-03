@@ -17,7 +17,7 @@ export default function Navbar(){
                     <Link className="nav-link" to="/automatisation">Automatisation</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/scenario">Scenario</Link>
+                    <Link className="nav-link" to="/scenario">Scénario</Link>
                 </li>
              </ul>
 );

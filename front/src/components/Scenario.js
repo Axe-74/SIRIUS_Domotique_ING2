@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {GET_ARRET_SCENARIO_CANICULE, GET_SCENARIO_CANICULE} from "../constants/back";
 import axios from "axios";
 import '../styles/Scenario.css';

@@ -61,7 +61,7 @@ public class Scenario_caniculeService {
         config.setTempCible3(base);
         config.setTempCible4(base - 4.0);
         config.setVariationMaximum(0.1);
-        config.setInfluenceHeure(0.1);
+        config.setInfluenceHeure(0.3);
 
         SimulationConfigTemp configCanicule = configRepository.save(config);
         idConfigCanicule = configCanicule.getIdSimulation();
