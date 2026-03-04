@@ -5,6 +5,7 @@ import sirius.back.repositories.mesure_v1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -23,5 +24,11 @@ public class mesure_v1Service {
 
     public mesure_v1 findOldestMesure() {
         return mesureRepository.findOldestMesure();
+    }
+
+    public List<mesure_v1> findFirst1440ByIdCapteurOrderByIdMesureDesc(int  idCapteur) {
+        List<mesure_v1> mesures_V1 = mesureRepository.findFirst1440ByIdCapteurOrderByIdMesureDesc(idCapteur);
+        mesures_V1.sort(Comparator.comparing(mesure_v1::getIdMesure));
+        return mesures_V1;
     }
 }
