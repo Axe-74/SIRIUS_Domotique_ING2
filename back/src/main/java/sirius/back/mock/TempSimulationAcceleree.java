@@ -80,7 +80,7 @@ public class TempSimulationAcceleree {
                 // Enregistrement en BDD
                 mesure_v1 nouvelleMesure = new mesure_v1();
                 nouvelleMesure.setValeur((float) tempArrondie);
-                nouvelleMesure.setId_capteur(config.getIdCapteurTemp() + 1);
+                nouvelleMesure.setIdCapteur(config.getIdCapteurTemp() + 1);
                 nouvelleMesure.setDate(heureFake);
 
                 mesureService.ajouterMesure(nouvelleMesure);

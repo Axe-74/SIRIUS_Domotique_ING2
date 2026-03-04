@@ -83,7 +83,7 @@ public class TempSimulationRunner implements CommandLineRunner {
             if (config.getEnvoiBd()) {
                 mesure_v1 nouvelleMesure = new mesure_v1();
                 nouvelleMesure.setValeur((float) tempArrondie);
-                nouvelleMesure.setId_capteur(config.getIdCapteurTemp());
+                nouvelleMesure.setIdCapteur(config.getIdCapteurTemp());
                 nouvelleMesure.setDate(LocalDateTime.now());
 
                 mesureService.ajouterMesure(nouvelleMesure);
