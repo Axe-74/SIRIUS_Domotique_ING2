@@ -86,7 +86,7 @@ public class TempSimulationRunner implements CommandLineRunner {
                 nouvelleMesure.setId_capteur(config.getIdCapteurTemp());
                 nouvelleMesure.setDate(LocalDateTime.now());
 
-                mesureService.ajouterMesure(nouvelleMesure);
+                //mesureService.ajouterMesure(nouvelleMesure);
 
                 System.out.println("[" + LocalTime.now() + "] Sauvegardé en BD : " + tempArrondie + "°C");
 
