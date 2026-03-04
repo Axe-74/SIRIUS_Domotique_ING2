@@ -8,3 +8,7 @@ export const LOCAL_HOST_CAPTEUR_TESTPIECE = LOCAL_HOST + '/capteur_testpiece/'
 export const GET_PIECES = LOCAL_HOST_PIECE + 'all'
 export const GET_CAPTEURS_TESTPIECE = LOCAL_HOST_CAPTEUR_TESTPIECE + 'all'
 export const UPDATE_PIECE = LOCAL_HOST_PIECE + 'update';
+export const LOCAL_HOST_SIMULATION = LOCAL_HOST + '/simulation_acceleree/'
+export const POST_SIMULATION_ACCELEREE = LOCAL_HOST + '/simulation_acceleree/journee'
+
+
