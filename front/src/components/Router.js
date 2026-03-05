@@ -7,6 +7,7 @@ import MesureTempActuelle from "./MesureTempActuelle";
 import Automatisation from "./automatisation";
 import Maison from "./Maison";
 import SimulationJournee from "./SimulationJournee";
+import Historique from "./Historique";
 
 
 export default function Router () {
@@ -20,6 +21,7 @@ export default function Router () {
                     <Route path="/automatisation" element={<Automatisation />}/>
                     <Route path="/simulation_journee" element={<SimulationJournee />}/>
                     <Route path="/maison" element={<Maison />} />
+                    <Route path="/historique" element={<Historique />} />
                     <Route path="*" element={<NotFound />}/>
                 </Routes>
             </div>
