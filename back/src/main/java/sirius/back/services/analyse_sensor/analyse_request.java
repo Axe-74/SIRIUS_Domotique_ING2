@@ -19,6 +19,7 @@ public class analyse_request implements CommandLineRunner {
 
         try{
             automatisationService.verifierEtMettreAJourAutomatisation();
+            automatisationService.MettreAJourObjetsAutomatisation();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

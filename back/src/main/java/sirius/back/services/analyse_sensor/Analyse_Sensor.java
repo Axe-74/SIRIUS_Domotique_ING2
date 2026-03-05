@@ -21,6 +21,7 @@ public class Analyse_Sensor implements CommandLineRunner {
             while (true) {
                 try {
                     automatisationService.verifierEtMettreAJourAutomatisation();
+                    automatisationService.MettreAJourObjetsAutomatisation();
                     TimeUnit.SECONDS.sleep(5); //temps de refresh de la methode
                 } catch (InterruptedException e) {
                     System.err.println("Arrêt de la boucle d'analyse de la température");
