@@ -140,6 +140,40 @@ export default function Maison() {
         );
     }
 
+    const infoPiece = pieces.find(function (piece) {
+        return piece.id_piece === idSelectionne;
+    })
+
+
+    let dansInfoPiece;
+
+    if (infoPiece !== undefined) {
+        dansInfoPiece = (
+            <div>
+                <p> Etage : {infoPiece.etage} </p>
+                <p> Pièce : {infoPiece.nom} </p>
+                <p> Dimensions : {infoPiece.width / RATIO}m x {infoPiece.height / RATIO}m </p>
+                <h5> Capteur(s) </h5>
+                <ul>
+                    {capteurs_testpiece
+                        .filter(function (c) {
+                            return c.id_piece === infoPiece.id_piece;
+                        })
+                        .map(function (c) {
+                            return (
+                                <li key={c.id_capteur_testpiece}>
+                                    {c.nom} : {c.etat}
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
+        );
+    } else {
+        dansInfoPiece = null
+    }
+
     return (
         <div className="interface-maison">
             <h3>Plan de la Maison</h3>
@@ -161,7 +195,7 @@ export default function Maison() {
                 <div className="zone-plan-maison">
                     <Stage width={LARGEUR_ZONE} height={HAUTEUR_ZONE}>
                         <Layer>
-                            {piecesAffichees.map(function(piece, index) {
+                            {piecesAffichees.map(function(piece) {
                                 const capteursDansPiece = capteurs_testpiece.filter(function (c) {
                                     return c.id_piece === piece.id_piece;
                                 });
@@ -250,6 +284,12 @@ export default function Maison() {
                         </Layer>
                     </Stage>
                 </div>
+
+                <div className="conteneur-info-piece">
+                    <h4> Infos pièces </h4>
+                    {dansInfoPiece}
+                </div>
+
             </div>
             {modifications === true && (
                 <div className="conteneur-sauvegarde">
