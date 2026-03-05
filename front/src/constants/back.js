@@ -8,3 +8,4 @@ export const LOCAL_HOST_CAPTEUR_TESTPIECE = LOCAL_HOST + '/capteur_testpiece/'
 export const GET_PIECES = LOCAL_HOST_PIECE + 'all'
 export const GET_CAPTEURS_TESTPIECE = LOCAL_HOST_CAPTEUR_TESTPIECE + 'all'
 export const UPDATE_PIECE = LOCAL_HOST_PIECE + 'update';
+export const GET_HISTORIQUE = LOCAL_HOST + '/mesures/last1440';
