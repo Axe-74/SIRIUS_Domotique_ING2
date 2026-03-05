@@ -8,6 +8,7 @@ import Automatisation from "./Automatisation";
 import Maison from "./Maison";
 import Scenario from "./Scenario";
 import SimulationJournee from "./SimulationJournee";
+import Historique from "./Historique";
 
 
 export default function Router () {
@@ -21,6 +22,7 @@ export default function Router () {
                     <Route path="/automatisation" element={<Automatisation />}/>
                     <Route path="/simulation_journee" element={<SimulationJournee />}/>
                     <Route path="/maison" element={<Maison />} />
+                    <Route path="/historique" element={<Historique />} />
                     <Route path="/scenario" element={<Scenario />} />
                     <Route path="*" element={<NotFound />}/>
                 </Routes>

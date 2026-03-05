@@ -46,7 +46,7 @@ public class TempSimulationAcceleree {
             double tempCible;
 
             int nbMesures = 1440; // 1 mesure toutes les minutes virtuelles, on fait tourner 24h
-            long tempsPause = 83; // pour une simulation de 2 minutes, 120 000ms/1440 = 83.3ms entre chaque mesure
+            long tempsPause = 42; // pour une simulation de 1 minute, 60 000ms/1440 = 42ms environ entre chaque mesure
 
             if (tempActuelle == null) {
                 mesure_v1 lastMesure = mesureService.findOldestMesure();
@@ -80,7 +80,7 @@ public class TempSimulationAcceleree {
                 // Enregistrement en BDD
                 mesure_v1 nouvelleMesure = new mesure_v1();
                 nouvelleMesure.setValeur((float) tempArrondie);
-                nouvelleMesure.setId_capteur(config.getIdCapteurTemp() + 1);
+                nouvelleMesure.setIdCapteur(config.getIdCapteurTemp() + 1);
                 nouvelleMesure.setDate(heureFake);
 
                 mesureService.ajouterMesure(nouvelleMesure);
