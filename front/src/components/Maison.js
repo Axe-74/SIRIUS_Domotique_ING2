@@ -219,7 +219,13 @@ export default function Maison() {
                                         x={piece.x}
                                         y={piece.y}
 
-                                        onClick={() => setIdSelectionne(piece.id_piece)}
+                                        onClick={() => {
+                                            if (idSelectionne === piece.id_piece) {
+                                                setIdSelectionne(null);
+                                            } else {
+                                                setIdSelectionne(piece.id_piece);
+                                            }
+                                        }}
 
                                         dragBoundFunc={(pos) => {
                                             let newX = pos.x;
