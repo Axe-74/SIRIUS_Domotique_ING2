@@ -1,4 +1,4 @@
-import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip} from 'recharts';
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer} from 'recharts';
 
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
@@ -46,17 +46,19 @@ export default function Historique() {
     },[])
 
     return (
-        <LineChart
-            width={1100}
-            height={500}
-            data={donneesGraphique}
-            margin={{ top: 50, right: 10, left: 100, bottom: 5 }}
-        >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" minTickGap={30}/>
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="valeur" stroke="#8884d8" dot={false}/>
-        </LineChart>
+        <ResponsiveContainer width='100%' height={600}>
+            <LineChart
+                width={1100}
+                height={500}
+                data={donneesGraphique}
+                //margin={{ top: 50, right: 10, left: 100, bottom: 5 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" minTickGap={30}/>
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="valeur" stroke="#8884d8" dot={false}/>
+            </LineChart>
+        </ResponsiveContainer>
     );
 }
