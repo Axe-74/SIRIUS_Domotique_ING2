@@ -149,25 +149,38 @@ export default function Maison() {
 
     if (infoPiece !== undefined) {
         dansInfoPiece = (
-            <div>
-                <p> Etage : {infoPiece.etage} </p>
-                <p> Pièce : {infoPiece.nom} </p>
-                <p> Dimensions : {infoPiece.width / RATIO}m x {infoPiece.height / RATIO}m </p>
-                <h5> Capteur(s) </h5>
-                <ul>
-                    {capteurs_testpiece
-                        .filter(function (c) {
-                            return c.id_piece === infoPiece.id_piece;
-                        })
-                        .map(function (c) {
+            <div className="conteneur-info-piece">
+                <h4> Infos pièces </h4>
+                <div>
+                    <p> Etage : {infoPiece.etage} </p>
+                    <p> Pièce : {infoPiece.nom} </p>
+                    <p> Dimensions : {infoPiece.width / RATIO}m x {infoPiece.height / RATIO}m </p>
+                    <h5> Capteur(s) </h5>
+                    <ul>
+                        {capteurs_testpiece
+                            .filter(function (c) {
+                                return c.id_piece === infoPiece.id_piece;
+                            })
+                            .map(function (c) {
+                                return (
+                                    <li key={c.id_capteur_testpiece}>
+                                        {c.nom} : {c.etat}
+                                    </li>
+                                );
+                            })
+                        }
+                    </ul>
+                    <h5> Objet(s) </h5>
+                    <ul>
+                        {infoPiece.objets.map(function (o) {
                             return (
-                                <li key={c.id_capteur_testpiece}>
-                                    {c.nom} : {c.etat}
+                                <li key={o.id_objet}>
+                                    {o.nom_objet} : {o.etat ? 'ON' : 'OFF'}
                                 </li>
                             );
-                        })
-                    }
-                </ul>
+                        })}
+                    </ul>
+                </div>
             </div>
         );
     } else {
@@ -206,7 +219,13 @@ export default function Maison() {
                                         x={piece.x}
                                         y={piece.y}
 
-                                        onClick={() => setIdSelectionne(piece.id_piece)}
+                                        onClick={() => {
+                                            if (idSelectionne === piece.id_piece) {
+                                                setIdSelectionne(null);
+                                            } else {
+                                                setIdSelectionne(piece.id_piece);
+                                            }
+                                        }}
 
                                         dragBoundFunc={(pos) => {
                                             let newX = pos.x;
@@ -285,8 +304,7 @@ export default function Maison() {
                     </Stage>
                 </div>
 
-                <div className="conteneur-info-piece">
-                    <h4> Infos pièces </h4>
+                <div>
                     {dansInfoPiece}
                 </div>
 

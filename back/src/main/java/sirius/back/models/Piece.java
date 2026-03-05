@@ -3,7 +3,7 @@ package sirius.back.models;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,4 +32,13 @@ public class Piece {
 
     @Column(name= "etage")
     private Integer etage;
+
+    @ManyToMany
+    @JoinTable(
+            name = "piece_parametre_objet",
+            joinColumns = @JoinColumn(name = "id_piece"),
+            inverseJoinColumns = @JoinColumn(name = "id_objet")
+    )
+    private List<Parametre_objet> objets;
+
 }
