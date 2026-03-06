@@ -3,7 +3,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import App from "./App";
 import Navbar from "./Navbar";
 import NotFound from "./NotFound";
-import MesureTempActuelle from "./MesureTempActuelle";
 import MaisonView from "../modules/maison/views/MaisonView";
 import AutomatisationPage from "../modules/Automatisation/views/AutomatisationPage";
 import ScenarioPage from "../modules/Scenario/views/ScenarioPage";
