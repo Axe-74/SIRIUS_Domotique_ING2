@@ -1,6 +1,6 @@
 import React from 'react';
 import { activateCanicule, stopCanicule } from "../api/scenarioApi";
-import ScenarioControls from "../components/Scenario";
+import ScenarioControls from "../components/Bouton";
 import '../styles/Scenario.css';
 
 export default function ScenarioPage() {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Automatisation({ data }) {
+export default function Tableau({ data }) {
     return (
         <table className="custom-table">
             <thead>

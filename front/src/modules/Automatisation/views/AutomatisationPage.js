@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchAutomatisations } from "../api/automatisationApi";
-import AutomatisationTable from "../components/Automatisation";
+import AutomatisationTable from "../components/Tableau";
 import '../styles/Automatisation.css';
 
 export default function AutomatisationPage() {
