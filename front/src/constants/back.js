@@ -13,4 +13,4 @@ export const LOCAL_HOST_SCENARIO = LOCAL_HOST +'/ScenarioCanicule/';
 export const GET_SCENARIO_CANICULE = LOCAL_HOST_SCENARIO + 'lancement';
 export const GET_ARRET_SCENARIO_CANICULE = LOCAL_HOST_SCENARIO + 'arret';
 export const LOCAL_HOST_SIMULATION = LOCAL_HOST + '/simulation_acceleree/'
-export const POST_SIMULATION_ACCELEREE = LOCAL_HOST + '/simulation_acceleree/journee'
+export const POST_SIMULATION_ACCELEREE = LOCAL_HOST_SIMULATION+  'journee'
