@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Table(name = "mesure_v1")
 public class mesure_v1 {
     @Id
-    @Column(name="id_mesure")
+    @Column(name="idMesure")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_mesure;
+    private Integer idMesure;
 
     @Column(name = "valeur")
     private Float valeur;
@@ -20,15 +20,15 @@ public class mesure_v1 {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "id_capteur")
-    private Integer id_capteur;
+    @Column(name = "idCapteur")
+    private Integer idCapteur;
 
-    public Integer getId_mesure() {
-        return id_mesure;
+    public Integer getIdMesure() {
+        return idMesure;
     }
 
-    public void setId_mesure(Integer id_mesure) {
-        this.id_mesure = id_mesure;
+    public void setIdMesure(Integer idMesure) {
+        this.idMesure = idMesure;
     }
 
     public Float getValeur() {
@@ -47,12 +47,12 @@ public class mesure_v1 {
         this.date = date;
     }
 
-    public Integer getId_capteur() {
-        return id_capteur;
+    public Integer getIdCapteur() {
+        return idCapteur;
     }
 
-    public void setId_capteur(Integer id_capteur) {
-        this.id_capteur = id_capteur;
+    public void setIdCapteur(Integer idCapteur) {
+        this.idCapteur = idCapteur;
     }
 
 }
