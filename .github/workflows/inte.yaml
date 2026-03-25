@@ -1,6 +1,7 @@
-name: CI - Build & Deploy
+name: CI - Build & Deploy On Inte
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -39,7 +40,7 @@ jobs:
 
       - name: Build backend
         working-directory: ./back
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests -PinteVM
 
       - name: Upload backend artifact
         uses: actions/upload-artifact@v4
