@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import sirius.back.services.AutomatisationService;
+import sirius.back.services.Parametre_objetService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,6 +13,10 @@ public class Analyse_Sensor implements CommandLineRunner {
 
     @Autowired
     private AutomatisationService automatisationService;
+
+    @Autowired
+    private Parametre_objetService parametre_objetService;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -22,6 +27,7 @@ public class Analyse_Sensor implements CommandLineRunner {
                 try {
                     automatisationService.verifierEtMettreAJourAutomatisation();
                     automatisationService.MettreAJourObjetsAutomatisation();
+                    parametre_objetService.mettreAJourSpecification();
                     TimeUnit.SECONDS.sleep(5); //temps de refresh de la methode
                 } catch (InterruptedException e) {
                     System.err.println("Arrêt de la boucle d'analyse de la température");
