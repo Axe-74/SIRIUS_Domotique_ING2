@@ -49,7 +49,7 @@ jobs:
           path: back/target/*.jar
 
   deploy:
-    name: Deploy to Integration Server
+    name: Deploy to Production Server
     runs-on: episen-domotique
     needs: [build_front, build_backend]
 
