@@ -8,15 +8,22 @@ export default function MesuresHistoriqueViews() {
 
     const [donneesGraphique, setDonneesGraphique] = useState([]);
 
-    const idCapteur = 2;
+    const idCapteurExt = 2;
+    const idCapteurInt = 11;
 
     const recupererHistorique = () => {
-        axios.get(GET_HISTORIQUE + `?idCapteur=${idCapteur}`).then(reponseHistorique => {
-            const donneesPropres = reponseHistorique.data.map(mesure => {
-                const date = new Date(mesure.date);
+        Promise.all([
+            axios.get(GET_HISTORIQUE + `?idCapteur=${idCapteurExt}`),
+            axios.get(GET_HISTORIQUE + `?idCapteur=${idCapteurInt}`)
+        ])
+            .then(([reponseExt, reponseInt]) => {
+                const donneesPropres = reponseExt.data.map((mesureExt, index) => {
+                    const mesureInt = reponseInt.data[index];
+                    const date = new Date(mesureExt.date);
 
                 return {
-                    valeur: mesure.valeur,
+                    valeurExt: mesureExt.valeur,
+                    valeurInt: mesureInt ? mesureInt.valeur : null,
                     date: date.toLocaleString('fr-FR', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -42,7 +49,7 @@ export default function MesuresHistoriqueViews() {
     }, []);
 
     return (
-        <div>
+        <div className="container mt-5">
             <MesuresHistoriqueComponents data={donneesGraphique} />
         </div>
     );

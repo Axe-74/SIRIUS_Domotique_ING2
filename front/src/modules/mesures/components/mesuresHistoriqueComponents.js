@@ -14,7 +14,8 @@ export default function MesuresHistoriqueComponents({ data }) {
                 <XAxis dataKey="date" minTickGap={30}/>
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey="valeur" stroke="#8884d8" dot={false}/>
+                <Line type="monotone" dataKey="valeurExt" stroke="#8884d8" dot={false} name="Température Extérieure"/>
+                <Line type="monotone" dataKey="valeurInt" stroke="#ff7300" dot={false} name="Température Intérieure"/>
             </LineChart>
         </ResponsiveContainer>
     );
