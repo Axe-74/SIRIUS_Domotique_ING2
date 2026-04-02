@@ -1,12 +1,19 @@
 package sirius.back.models;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
 @Table(name = "parametre_objet")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Parametre_objet {
 
     @Id
@@ -20,19 +27,11 @@ public class Parametre_objet {
     @Column(name = "etat")
     private Boolean etat;
 
-    public Integer getid_objet() {
-        return id_objet;
-    }
+    @Type(type = "jsonb")
+    @Column(name = "specifications", columnDefinition = "jsonb")
+    private Map<String, Object> specifications;
 
-    public void setid_objet(Integer id_objet) {
-        this.id_objet = id_objet;
-    }
-
-    public boolean getetat() {
-        return etat;
-    }
-
-    public void setetat(boolean etat) {
-        this.etat = etat;
-    }
+    @ToString.Exclude // pour prevent une boucle infinie
+    @ManyToMany(mappedBy = "objets", fetch = FetchType.EAGER)
+    private List<Piece> pieces;
 }
