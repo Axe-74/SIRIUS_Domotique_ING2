@@ -1,6 +1,7 @@
 package sirius.back.models;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;

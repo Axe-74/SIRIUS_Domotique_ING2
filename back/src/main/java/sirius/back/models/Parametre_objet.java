@@ -4,6 +4,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import java.util.List;
 import java.util.Map;
 
 
