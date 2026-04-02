@@ -1,6 +1,7 @@
 package sirius.back.models;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Piece {
     @Column(name= "etage")
     private Integer etage;
 
+    @ToString.Exclude // pour prevent une boucle infinie
     @ManyToMany
     @JoinTable(
             name = "piece_parametre_objet",
