@@ -40,7 +40,7 @@ public class TempSimulationAcceleree {
                 return;
             }
 
-            System.out.println("Démarrage de la simulation d'une journée en 2 minutes");
+            System.out.println("Démarrage de la simulation d'une journée : température extérieure");
             System.out.println(config.getNomConfig());
 
             // 1. Initialisation de l'heure
@@ -51,14 +51,17 @@ public class TempSimulationAcceleree {
             double tempCible;
 
             int nbMesures = 1440; // 1 mesure toutes les minutes virtuelles, on fait tourner 24h
-            long tempsPause = 42; // pour une simulation de 1 minute, 60 000ms/1440 = 42ms environ entre chaque mesure
+            long tempsPause = 200; // pour une simulation de 1 minute, 60 000ms/1440 = 42ms environ entre chaque mesure
 
             if (tempActuelle == null) {
-                mesure_v1 lastMesure = mesureService.findOldestMesure();
+                int idCible = config.getIdCapteurTemp() + 1;
+                mesure_v1 lastMesure = mesureService.findLatestMesureByCapteur(idCible);
                 if (heure == 0 && minute == 0 && seconde == 0) {
                     tempActuelle = config.getTempCible4();
-                } else {
+                } else if (lastMesure != null) {
                     tempActuelle = (double) lastMesure.getValeur();
+                } else {
+                    tempActuelle = config.getTempCible1();
                 }
             }
 

@@ -2,13 +2,12 @@ package sirius.back.models;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
-
-
-import javax.persistence.*;
 
 @Entity
 @Data
@@ -27,14 +26,14 @@ public class Parametre_objet {
     @Column(name = "etat")
     private Boolean etat;
 
-    public Integer getid_objet() {
-        return id_objet;
-    }
-
     @Type(type = "jsonb")
     @Column(name = "specifications", columnDefinition = "jsonb")
-    private Map<String, Object> donneesJson;
+    private Map<String, Object> specifications;
 
+    @ToString.Exclude // pour prevent une boucle infinie
+    @ManyToMany(mappedBy = "objets", fetch = FetchType.EAGER)
+    private List<Piece> pieces;
+}
     public void setid_objet(Integer id_objet) {
         this.id_objet = id_objet;
     }
@@ -48,10 +47,10 @@ public class Parametre_objet {
     }
 
     public Map<String, Object> getDonneesJson() {
-        return donneesJson;
+        return specifications;
     }
 
-    public void setDonneesJson(Map<String, Object> donneesJson) {
-        this.donneesJson = donneesJson;
+    public void setDonneesJson(Map<String, Object> specifications) {
+        this.specifications = specifications;
     }
 }
