@@ -58,6 +58,12 @@
             <artifactId>lombok</artifactId>
             <version>edge-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>2.21.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>junit</groupId>
@@ -82,14 +88,14 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <db.url>jdbc:postgresql://172.31.254.38:54320/domotique</db.url>
+                <db.url>jdbc:postgresql://domotique.inside.esipe-creteil.info:54320/domotique</db.url>
             </properties>
         </profile>
 
         <profile>
             <id>prod</id>
             <properties>
-                <db.url>jdbc:postgresql://172.31.254.38:5432/domotique</db.url>
+                <db.url>jdbc:postgresql://domotique.inside.esipe-creteil.info:5432/domotique</db.url>
             </properties>
         </profile>
 
