@@ -33,7 +33,7 @@ public class Parametre_objet {
     @ToString.Exclude // pour prevent une boucle infinie
     @ManyToMany(mappedBy = "objets", fetch = FetchType.EAGER)
     private List<Piece> pieces;
-}
+
     public void setid_objet(Integer id_objet) {
         this.id_objet = id_objet;
     }
