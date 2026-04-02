@@ -31,4 +31,8 @@ public class mesure_v1Service {
         mesures_V1.sort(Comparator.comparing(mesure_v1::getIdMesure));
         return mesures_V1;
     }
+
+    public mesure_v1 findLatestMesureByCapteur(int idCapteur) {
+        return mesureRepository.findLatestMesureByCapteur(idCapteur);
+    }
 }
