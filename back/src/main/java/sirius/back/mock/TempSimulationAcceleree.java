@@ -91,7 +91,9 @@ public class TempSimulationAcceleree {
                 mesureService.ajouterMesure(nouvelleMesure);
 
                 //update de l'heure à chaque fin de boucle
-                parametreObjetRepository.agirSurObjets(tempArrondie,heureFake);
+                try {
+                    parametreObjetRepository.agirSurObjets(tempArrondie,heureFake);
+                }catch (Exception e){}
 
                 heureFake = heureFake.plusMinutes(1);
 
