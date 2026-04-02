@@ -1,6 +1,8 @@
 package sirius.back.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class Automatisation {
     private double seuilDeDeclenchement;
 
     @ManyToMany()
+    @JsonIgnore
     @JoinTable(
             name = "automatisation_parametre_objet",
             joinColumns = @JoinColumn(name = "id_automatisation"),

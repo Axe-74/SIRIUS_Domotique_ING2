@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import sirius.back.models.SimulationConfigTemp;
 import sirius.back.models.mesure_v1;
+import sirius.back.repositories.Parametre_objetRepository;
 import sirius.back.repositories.SimulationConfigTempRepository;
+import sirius.back.services.Parametre_objetService;
 import sirius.back.services.mesure_v1Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,9 @@ public class TempSimulationAcceleree {
 
     @Autowired
     private SimulationConfigTempRepository configRepository;
+
+    @Autowired
+    private Parametre_objetService parametreObjetRepository;
 
     private Double tempActuelle = null;
 
@@ -89,6 +94,10 @@ public class TempSimulationAcceleree {
                 mesureService.ajouterMesure(nouvelleMesure);
 
                 //update de l'heure à chaque fin de boucle
+                try {
+                    parametreObjetRepository.agirSurObjets(tempArrondie,heureFake);
+                }catch (Exception e){}
+
                 heureFake = heureFake.plusMinutes(1);
 
                 try {

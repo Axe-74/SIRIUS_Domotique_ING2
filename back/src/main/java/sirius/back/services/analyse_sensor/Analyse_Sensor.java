@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import sirius.back.services.AutomatisationService;
+import sirius.back.services.Parametre_objetService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,6 +13,7 @@ public class Analyse_Sensor implements CommandLineRunner {
 
     @Autowired
     private AutomatisationService automatisationService;
+
 
     @Override
     public void run(String... args) throws Exception {

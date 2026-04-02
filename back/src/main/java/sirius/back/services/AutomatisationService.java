@@ -11,6 +11,7 @@ import sirius.back.models.Parametre_objet;
 
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AutomatisationService {
@@ -21,6 +22,7 @@ public class AutomatisationService {
     private mesure_v1Service mesure_v1Service;
     @Autowired
     private Parametre_objetRepository parametreObjetRepository;
+
 
     public Automatisation findOldestAutomatisation() {
         return automatisationRepository.findLastAutomatisationByDate();
@@ -74,8 +76,7 @@ public class AutomatisationService {
                 } else {
                     //System.out.println("Température normale mais " + auto.getnom() + " déja désactivé");
                 }
-            }
-            else {
+            } else {
                 //System.out.println("Aucun changement pour " + auto.getnom());
             }
         }
@@ -91,13 +92,13 @@ public class AutomatisationService {
                 for (Parametre_objet objet : objets) {
                     objet.setEtat(true);
                     parametreObjetRepository.save(objet);
-                    System.out.println(" -> L'objet " + objet.getNom_objet() + " a été activé !");
+                    //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été activé !");
                 }
             } else {
                 for (Parametre_objet objet : objets) {
                     objet.setEtat(false);
                     parametreObjetRepository.save(objet);
-                    System.out.println(" -> L'objet " + objet.getNom_objet() + " a été désactivé !");
+                    //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été désactivé !");
                 }
             }
         }

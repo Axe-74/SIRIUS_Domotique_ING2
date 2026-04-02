@@ -1,6 +1,10 @@
 import React from 'react';
 
 export default function Tableau({ data }) {
+    if (!data) {
+        return <p>Chargement des données...</p>;
+    }
+
     return (
         <table className="custom-table">
             <thead>
@@ -21,7 +25,9 @@ export default function Tableau({ data }) {
                         <span className="temp-badge">{item.seuilDeDeclenchement} °C</span>
                     </td>
                     <td className="objects-list">
-                        {item.objetsRelies.map(obj => obj.nom_objet).join(', ')}
+                        {item.objetsRelies && item.objetsRelies.length > 0
+                            ? item.objetsRelies.map(obj => obj.nom_objet).join(', ')
+                            : "Aucun objet"}
                     </td>
                     <td>{item.etats ? "Actif" : "Inactif"}</td>
                 </tr>
