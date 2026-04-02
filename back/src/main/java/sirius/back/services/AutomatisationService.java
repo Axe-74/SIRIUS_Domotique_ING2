@@ -90,13 +90,13 @@ public class AutomatisationService {
             List<Parametre_objet> objets = auto.getObjetsRelies();
             if (auto.getEtats().equals(Boolean.TRUE)) {
                 for (Parametre_objet objet : objets) {
-                    objet.setEtat(true);
+                    objet.setetat(true);
                     parametreObjetRepository.save(objet);
                     //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été activé !");
                 }
             } else {
                 for (Parametre_objet objet : objets) {
-                    objet.setEtat(false);
+                    objet.setetat(false);
                     parametreObjetRepository.save(objet);
                     //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été désactivé !");
                 }

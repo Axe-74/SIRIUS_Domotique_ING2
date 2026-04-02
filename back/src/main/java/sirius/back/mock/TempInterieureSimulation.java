@@ -104,7 +104,7 @@ public class TempInterieureSimulation {
                 if (objetsPiece != null) {
                     for (Parametre_objet obj : objetsPiece) {
 
-                        if (!obj.getEtat()) {
+                        if (!obj.getetat()) {
                             continue;
                         }
 
