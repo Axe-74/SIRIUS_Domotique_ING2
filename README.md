@@ -43,19 +43,21 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
 # Auteurs
 
 * **Axel JACOMME**
-  * M1 : Création d'un mock permettant de générer des données pour un capteur de température
-  * M2 : Création d'un mock permettant de générer des données pour un capteur de mouvement
-  * US1 – Visualiser l'état et la valeur en temps réel
-  * M3 - Création d'interprétations pour chaque type de données
-  * US2 – Consulter l'ensemble de l'historique des mesures
-  * M5 - Création d'un mock de capteur défectueux
+  * M1 - Création d'un mock permettant de générer des données pour un capteur de température -- V5 dev
+  * M2 - Création d'un mock permettant de générer des données pour un capteur de mouvement -- V5 dev
+  * M3 - Création d'un mock permettant de générer des données pour un capteur de température intérieure -- V5 dev
+  * M4 - Création d'interprétations pour chaque type de données 
+  * M5 - Création d'un mock de capteur défectueux 
   * M6 - Création d'un mock de dépassement de seuil
-  * US3 – Recevoir des notifications d'anomalie
-  * M4 - Création d'un mock permettant de générer des données pour un capteur de luminosité
   * M7 - Générateur d'historique de données
   * M8 - Création d'un mock pour le niveau d'intensité d'une lampe
   * M9 - Création d'un mock pour le degré d'ouverture d'une fenêtre
-  * US4 – Consulter certaines valeurs spécifiques de l'historique des mesures
+  * A1 - Détection des anomalies des mesures des capteurs de température -- V2 dev, pas dans master car déclaré pas intéressant 
+  * S1 - Recherche d'une solution adaptée pour afficher des données sur un graphique -- fait
+  * US1 – Visualiser l'état et la valeur en temps réel -- dev
+  * US2 – Consulter l'historique des mesures -- V2 dev
+  * US3 – Recevoir des notifications d'anomalie 
+  * US4 – Consulter certaines valeurs spécifiques de l'historique des mesures -- dev
   * US5 – Préparer l'interface de paramétrage spécifique
   * US6 – Configurer les valeurs par défaut des modèles
  
