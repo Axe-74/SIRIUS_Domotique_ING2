@@ -26,6 +26,10 @@ public class mesure_v1Service {
         return mesureRepository.findOldestMesure();
     }
 
+    public mesure_v1 findLatestDateByCapteur(int idCapteur) {
+        return mesureRepository.findLatestDateByCapteur(idCapteur);
+    }
+
     public List<mesure_v1> findFirst1440ByIdCapteurOrderByIdMesureDesc(int  idCapteur) {
         List<mesure_v1> mesures_V1 = mesureRepository.findFirst1440ByIdCapteurOrderByIdMesureDesc(idCapteur);
         mesures_V1.sort(Comparator.comparing(mesure_v1::getIdMesure));

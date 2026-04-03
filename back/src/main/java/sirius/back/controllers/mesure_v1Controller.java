@@ -32,6 +32,11 @@ public class mesure_v1Controller {
         return new ResponseEntity<>(mesureService.findOldestMesure(), HttpStatus.OK);
     }
 
+    @GetMapping("/lastByCapteur")
+    public ResponseEntity<mesure_v1> findLatestDateByCapteur(@RequestParam int idCapteur) {
+        return new ResponseEntity<>(mesureService.findLatestDateByCapteur(idCapteur), HttpStatus.OK);
+    }
+
     @GetMapping("/last1440")
     public  ResponseEntity<List<mesure_v1>> findFirst1440ByIdCapteurOrderByIdMesureDesc(@RequestParam int idCapteur) {
         return new ResponseEntity<>(mesureService.findFirst1440ByIdCapteurOrderByIdMesureDesc(idCapteur), HttpStatus.OK);
