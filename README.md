@@ -65,9 +65,10 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
   * WI1 — Création d'une Class permettant d'analyser les données des capteurs
   * WI2 — Module d'injection et de priorisation des données simulées
   * WI3 — Simuler des scénarios
-  * WI4 — Définir des conditions pour une automatisation
-  * WI5 — Définir des actions pour une automatisation
-  * WI6 — Modifier une automatisation existante
+  * WI6 — Affichage du page pour le déclenchement des scénarios
+  * WI7 — Création d'objets reliés a une ou plusieurs automatisations
+  * WI8 — Mise a jour de l'états de l'objet en fonction de son automatisation
+  * WI9 — Affichage de la liste des objets reliés aux automatisations
   * WI7 — Supprimer une automatisation
   * WI8 — Gestion des profils de simulation (Presets)
   * WI9 — Utiliser un modèle d’automatisation

@@ -16,6 +16,15 @@ export default function Navbar(){
                 <li className="nav-item">
                     <Link className="nav-link" to="/automatisation">Automatisation</Link>
                 </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/scenario">Scénario</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/simulation_journee">Simulation_Journee</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/historique">Historique</Link>
+                </li>
              </ul>
 );
 };

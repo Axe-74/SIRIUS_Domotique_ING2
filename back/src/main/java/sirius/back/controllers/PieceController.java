@@ -22,4 +22,9 @@ public class PieceController {
         return new ResponseEntity<>(pieceService.findAllPiece(), HttpStatus.OK);
     }
 
+    @PostMapping("update")
+    public ResponseEntity<Piece> updatePiece(@RequestBody Piece piece) {
+        return new ResponseEntity<>(pieceService.updatePiece(piece), HttpStatus.OK);
+    }
+
 }

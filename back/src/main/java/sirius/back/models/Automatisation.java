@@ -1,9 +1,12 @@
 package sirius.back.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,9 +24,21 @@ public class Automatisation {
     @Column(name = "nom")
     private String nom;
 
-
     @Column(name = "seuil_de_declenchement")
     private double seuilDeDeclenchement;
+
+    @ManyToMany()
+    @JsonIgnore
+    @JoinTable(
+            name = "automatisation_parametre_objet",
+            joinColumns = @JoinColumn(name = "id_automatisation"),
+            inverseJoinColumns = @JoinColumn(name = "id_objet")
+    )
+    private List<Parametre_objet> objetsRelies;
+
+    public List<Parametre_objet> getObjetsRelies() { return objetsRelies; }
+
+    public void setObjetsRelies(List<Parametre_objet> objetsRelies) { this.objetsRelies = objetsRelies; }
 
     public Integer getid_Automatisation() {
         return idAutomatisation;

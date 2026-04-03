@@ -1,0 +1,45 @@
+/* Conteneur principal */
+.scenario-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Style de base des boutons */
+.btn-scenario {
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    transition: transform 0.1s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Bouton Vert (Lancement) */
+.btn-launch {
+    background-color: #2ecc71;
+}
+
+.btn-launch:hover {
+    background-color: #27ae60;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Bouton Rouge (Stop) */
+.btn-stop {
+    background-color: #e74c3c;
+}
+
+.btn-stop:hover {
+    background-color: #c0392b;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Animation lors du clic (Effet de pression) */
+.btn-scenario:active {
+    transform: scale(0.95); /* Le bouton rétrécit légèrement */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

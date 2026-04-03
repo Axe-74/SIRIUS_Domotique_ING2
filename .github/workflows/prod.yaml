@@ -1,9 +1,10 @@
-name: CI - Build & Deploy
+name: CI - Build & Deploy On Prod
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - master
+    tags: 
+      - R*
 
 jobs:
 
@@ -39,7 +40,7 @@ jobs:
 
       - name: Build backend
         working-directory: ./back
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests -PprodVM
 
       - name: Upload backend artifact
         uses: actions/upload-artifact@v4
@@ -48,7 +49,7 @@ jobs:
           path: back/target/*.jar
 
   deploy:
-    name: Deploy to Integration Server
+    name: Deploy to Production Server
     runs-on: episen-domotique
     needs: [build_front, build_backend]
 
@@ -68,9 +69,9 @@ jobs:
       - name: Copy front via SCP
         uses: easingthemes/ssh-deploy@main
         with:
-          REMOTE_HOST: ${{ vars.INTEG_HOST }}
-          REMOTE_USER: ${{ vars.INTEG_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.INTEG_SSH_KEY }}
+          REMOTE_HOST: ${{ vars.PROD_FRONT_HOST }}
+          REMOTE_USER: ${{ vars.PROD_FRONT_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.PROD_FRONT_SSH_KEY }}
           SOURCE: "front-dist/*"
           TARGET: "/var/www/html"
           ARGS: '-zvci --delete'
@@ -78,9 +79,9 @@ jobs:
       - name: Copy backend via SCP
         uses: easingthemes/ssh-deploy@main
         with:
-          REMOTE_HOST: ${{ vars.INTEG_HOST }}
-          REMOTE_USER: ${{ vars.INTEG_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.INTEG_SSH_KEY }}
+          REMOTE_HOST: ${{ vars.PROD_API_HOST }}
+          REMOTE_USER: ${{ vars.PROD_API_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.PROD_API_SSH_KEY }}
           SOURCE: "backend-dist/*.jar"
           TARGET: "/opt/app/backend.jar"
           ARGS: '-zvci --delete'
@@ -88,7 +89,7 @@ jobs:
       - name: Restart backend service
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ vars.INTEG_HOST }}
-          username: ${{ vars.INTEG_USER }}
-          key: ${{ secrets.INTEG_SSH_KEY }}
+          host: ${{ vars.PROD_API_HOST }}
+          username: ${{ vars.PROD_API_USER }}
+          key: ${{ secrets.PROD_API_SSH_KEY }}
           script: sudo systemctl restart domotique

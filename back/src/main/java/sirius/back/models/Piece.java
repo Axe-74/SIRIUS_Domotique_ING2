@@ -1,9 +1,10 @@
 package sirius.back.models;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,4 +30,17 @@ public class Piece {
 
     @Column(name = "y")
     private Float y;
+
+    @Column(name= "etage")
+    private Integer etage;
+
+    @ToString.Exclude // pour prevent une boucle infinie
+    @ManyToMany
+    @JoinTable(
+            name = "piece_parametre_objet",
+            joinColumns = @JoinColumn(name = "id_piece"),
+            inverseJoinColumns = @JoinColumn(name = "id_objet")
+    )
+    private List<Parametre_objet> objets;
+
 }
