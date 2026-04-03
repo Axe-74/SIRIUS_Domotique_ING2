@@ -51,12 +51,12 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
   * M6 - Mock de dépassement de seuil
   * M7 - Générateur d'historique de données
   * M8 - Mock pour le niveau d'intensité d'une lampe
-  * 
+    
   * A1 - Détection des anomalies des mesures des capteurs de température -- V2 dev, pas dans master car déclaré pas intéressant
   * A2 - Création d'interprétations pour chaque type de données
-  * 
+    
   * S1 - Recherche d'une solution adaptée pour afficher des données sur un graphique -- fait
-  * 
+    
   * US1 – Visualiser l'état et la valeur en temps réel -- dev
   * US2 – Consulter l'historique des mesures -- V2 dev
   * US3 – Recevoir des notifications d'anomalie 
