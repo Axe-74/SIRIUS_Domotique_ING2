@@ -16,6 +16,7 @@ export default function MesuresHistoriqueComponents({ data }) {
                 <Tooltip />
                 <Line type="monotone" dataKey="valeurExt" stroke="#8884d8" dot={false} name="Température Extérieure"/>
                 <Line type="monotone" dataKey="valeurInt" stroke="#ff7300" dot={false} name="Température Intérieure"/>
+                <Line type="step" dataKey="valeurMouv" stroke="#28a745" dot={false} name="Présence" />
             </LineChart>
         </ResponsiveContainer>
     );
