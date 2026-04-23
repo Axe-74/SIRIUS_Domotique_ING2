@@ -39,6 +39,27 @@ public class TempInterieureSimulation {
     private final double COEF_INFLUENCE_EXTERIEURE_MAX = 0.1;
     private final double COEF_ISOLATION_FERMEE = 0.001;
 
+    public double calculerNouvelleTemperature(Double tempCibleRadiateur, double tauxOuvertureFenetre, double tempActuelle, double tempExterieure) {
+        double nouvelleTemp = tempActuelle;
+        if (tempCibleRadiateur != null) {
+
+            // Cas 1 : radiateur allumé, extérieur a 0 influence en comparaison
+            double difference = tempCibleRadiateur - tempActuelle;
+            nouvelleTemp += (difference * COEF_PUISSANCE_RADIATEUR);
+
+        } else {
+
+            // Cas 2 : radiateur éteint, extérieur prime
+            if (tauxOuvertureFenetre > 0) {
+                double influence = COEF_INFLUENCE_EXTERIEURE_MAX * tauxOuvertureFenetre;
+                nouvelleTemp += (tempExterieure - tempActuelle) * influence;
+            } else {
+                nouvelleTemp += (tempExterieure - tempActuelle) * COEF_ISOLATION_FERMEE;
+            }
+        }
+        return nouvelleTemp;
+    }
+
     public void lancerSimulation() {
         Random random = new Random();
 
@@ -148,22 +169,7 @@ public class TempInterieureSimulation {
                 }
 
                 // 5. Calcul de la nouvelle température
-                if (tempCibleRadiateur != null) {
-
-                    // Cas 1 : radiateur allumé, extérieur a 0 influence en comparaison
-                    double difference = tempCibleRadiateur - tempActuelle;
-                    tempActuelle += (difference * COEF_PUISSANCE_RADIATEUR);
-
-                } else {
-
-                    // Cas 2 : radiateur éteint, extérieur prime
-                    if (tauxOuvertureFenetre > 0) {
-                        double influence = COEF_INFLUENCE_EXTERIEURE_MAX * tauxOuvertureFenetre;
-                        tempActuelle += (tempExterieure - tempActuelle) * influence;
-                    } else {
-                        tempActuelle += (tempExterieure - tempActuelle) * COEF_ISOLATION_FERMEE;
-                    }
-                }
+                tempActuelle = calculerNouvelleTemperature(tempCibleRadiateur, tauxOuvertureFenetre, tempActuelle, tempExterieure);
 
                 // 6. Bruit aléatoire du capteur
                 double variationAleatoire = (random.nextDouble() * 2 - 1) * config.getVariationMaximum();
