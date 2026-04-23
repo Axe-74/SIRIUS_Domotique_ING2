@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sirius.back.mock.MouvSimulation;
 import sirius.back.mock.TempInterieureSimulation;
 import sirius.back.mock.TempSimulationAcceleree;
 
@@ -20,6 +21,9 @@ public class SimuAccelereeController {
 
     @Autowired
     private TempInterieureSimulation tempInterieureSimulation;
+
+    @Autowired
+    private MouvSimulation mouvSimulation;
 
     @PostMapping("journee")
     public ResponseEntity<String> ajouterTempSimulationAcceleree() {
@@ -35,6 +39,10 @@ public class SimuAccelereeController {
                 throw new RuntimeException(e);
             }
             tempInterieureSimulation.lancerSimulation();
+        }).start();
+
+        new Thread(() -> {
+            mouvSimulation.lancerSimulation();
         }).start();
 
         return new ResponseEntity<>("Simulation d'une journée en 2 minutes lancée", HttpStatus.CREATED);
