@@ -27,7 +27,7 @@ export default function MesuresHistoriqueViews() {
                 return {
                     valeurExt: mesureExt.valeur,
                     valeurInt: mesureInt ? mesureInt.valeur : null,
-                    valeurMouv: mesureMouv ? mesureMouv.valeur*10 : null,
+                    valeurMouv: mesureMouv ? mesureMouv.valeur : null,
                     date: date.toLocaleString('fr-FR', {
                         hour: '2-digit',
                         minute: '2-digit',
