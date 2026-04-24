@@ -32,7 +32,7 @@ export default function PanneauLateral({infoPiece, capteurs_testpiece, RATIO}) {
                     </ul>
                     <h5> Objet(s) </h5>
                     <ul>
-                        {infoPiece.objets.map(function (o) {
+                        {infoPiece.objets?.map(function (o) {
                             return (
                                 <li key={o.id_objet}>
                                     {o.nom_objet} : {o.etat ? 'ON' : 'OFF'}

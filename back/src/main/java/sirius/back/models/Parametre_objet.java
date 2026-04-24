@@ -1,16 +1,10 @@
 package sirius.back.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import lombok.ToString;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +37,6 @@ public class Parametre_objet {
     public void setid_objet(Integer id_objet) {
         this.id_objet = id_objet;
     }
-    @Type(type = "jsonb")
-    @Column(name = "specifications", columnDefinition = "jsonb")
-    private Map<String, Object> specifications;
 
     public boolean getetat() {
         return etat;
@@ -62,8 +53,4 @@ public class Parametre_objet {
     public void setDonneesJson(Map<String, Object> specifications) {
         this.specifications = specifications;
     }
-    @JsonIgnore
-    @ToString.Exclude // pour prevent une boucle infinie
-    @ManyToMany(mappedBy = "objets", fetch = FetchType.EAGER)
-    private List<Piece> pieces;
 }

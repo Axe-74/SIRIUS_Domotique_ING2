@@ -1,5 +1,7 @@
 package sirius.back.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,6 +11,9 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "piece")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id_piece")
 public class Piece {
 
     @Id

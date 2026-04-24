@@ -26,8 +26,8 @@ public class mesure_v1Service {
         return mesureRepository.findOldestMesure();
     }
 
-    public mesure_v1 findLatestDateByCapteur(int idCapteur) {
-        return mesureRepository.findLatestDateByCapteur(idCapteur);
+    public mesure_v1 findLatestMesureByCapteurOrder(int idCapteur) {
+        return mesureRepository.findLatestMesureByCapteurOrder(idCapteur);
     }
 
     public List<mesure_v1> findFirst1440ByIdCapteurOrderByIdMesureDesc(int  idCapteur) {

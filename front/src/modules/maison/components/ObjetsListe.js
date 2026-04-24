@@ -1,4 +1,4 @@
-export default function ObjetList({ objets }) {
+export default function ObjetList({ objets = [] }) {
     const sorted = [...objets].sort((a, b) => a.id_objet - b.id_objet);
 
     return (
