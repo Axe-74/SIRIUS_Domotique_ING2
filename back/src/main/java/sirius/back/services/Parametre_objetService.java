@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sirius.back.models.Parametre_objet;
+import sirius.back.models.mesure_v1;
 import sirius.back.repositories.Parametre_objetRepository;
+import sirius.back.repositories.mesure_v1Repository;
+import sirius.back.utils.fonctionpure.CalculTemperature;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -16,23 +19,33 @@ public class Parametre_objetService {
 
     @Autowired
     private Parametre_objetRepository Parametre_objetRepository;
+    @Autowired
+    private mesure_v1Repository mesure_v1Repository;
 
     @Transactional
     public void agirSurObjets(double temperature, LocalDateTime heure) {
         List<Parametre_objet> objets = Parametre_objetRepository.findAll();
+        mesure_v1 mesure_v1_interieur = mesure_v1Repository.findLatestMesureByCapteurOrder(11);
+        mesure_v1 mesure_v1_mouvement = mesure_v1Repository.findLatestMesureByCapteurOrder(3);
 
+        // --- Paramètres temporels ---
         boolean Nuit = (heure.getHour() < 7 || heure.getHour() >= 21);
         boolean Matin = (heure.getHour() >= 7 && heure.getHour() < 12);
         boolean Après_midi = (heure.getHour() >= 12 && heure.getHour() < 19);
         boolean Soir = (heure.getHour() >= 19 && heure.getHour() < 21);
-        double Volume_Salon = 4.5 * 3.6 * 2.2; //Longueur * Largeur * Hauteur
+
+        // --- Paramètres physiques ---
+        double Volume_Salon = 4.5 * 3.6 * 2.2;
         int température_cible = 19;
-        double Coefficient_de_deperdition = 1.2; // valeur moyenne d'un logement récent
-        double tempDebutOuverture = 17.0; // À 17°C, on commence juste à ouvrir
-        double tempMaxOuverture = 22.0;   // À 22°C, on ouvre au maximum
-        int angleMax = 45;                // Angle maximum d'ouverture pris arbitrairement
+        double Coefficient_de_deperdition = 1.2;
+        double tempDebutOuverture = 17.0;
+        double tempMaxOuverture = 22.0;
+        int angleMax = 45;
 
-
+        double TemperatureInterieure = (double) mesure_v1_interieur.getValeur();
+        boolean DetectionMouvement = mesure_v1_mouvement.getValeur() != 0.0;
+        // Définit les conditions d'ouvertures des fenetres
+        boolean conditionsOuvertureFenetre = Après_midi && temperature >= tempDebutOuverture && TemperatureInterieure >= 18.0;
 
         for (Parametre_objet objet : objets) {
             Map<String, Object> specs = objet.getDonneesJson();
@@ -40,54 +53,33 @@ public class Parametre_objetService {
 
             String nom = objet.getNom_objet().toLowerCase();
 
+            // Paramètres pour les objets "radiateur"
             if (nom.contains("radiateur")) {
-                if (temperature < température_cible) {
-                    double delta = température_cible - temperature;
-                    double puissance = Math.min(1500,Math.round(Volume_Salon * Coefficient_de_deperdition * delta)+1000); // Puissance = Volume de la pièce x Coefficient de déperdition volumique G x Delta D. On rajoute 1000 pour une puissance plus cohérentes
+                if (temperature < température_cible && !conditionsOuvertureFenetre) {
+                    double puissance = CalculTemperature.calculerPuissanceRadiateur(
+                            temperature,
+                            température_cible,
+                            Volume_Salon,
+                            Coefficient_de_deperdition
+                    );
+
                     objet.setetat(true);
                     specs.put("puissance_watts", puissance);
+                    specs.put("statut", "Allume");
+
+                    if (Nuit) specs.put("temperature", 19);
+                    else if (Matin) specs.put("temperature", 20);
+                    else if (Soir) specs.put("temperature", 21);
+                    else specs.put("temperature", 15);
+
                 } else {
                     objet.setetat(false);
                     specs.put("puissance_watts", 0);
+                    specs.put("statut", "Eteint");
                 }
             }
 
-            if (nom.contains("radiateur")) {
-                if (temperature < température_cible) {
-                    if (Nuit) {
-                        objet.setetat(true);
-                        specs.put("temperature", 19);
-                    } else if (Matin) {
-                        objet.setetat(true);
-                        specs.put("temperature", 20);
-                    } else if (Soir) {
-                        objet.setetat(true);
-                        specs.put("temperature", 21);
-                    } else {
-                        objet.setetat(false);
-                        specs.put("temperature", 15);
-                    }
-                }
-            }
-
-            else if (nom.contains("volet")) {
-                if (Nuit) {
-                    specs.put("niveau_ouverture", 0);
-                    specs.put("statut", "Fermé");
-                } else if (Après_midi){
-                    specs.put("niveau_ouverture", 100);
-                    specs.put("statut", "Ouvert");
-                } else if (Soir) {
-                    specs.put("niveau_ouverture", 70);
-                    specs.put("statut", "Ouvert");
-                }
-                else  {
-                    specs.put("niveau_ouverture", 30);
-                    specs.put("statut", "Veille");
-                }
-            }
-
-
+            // Paramètres pour les objets "fenetre"
             else if (nom.contains("fenêtre")) {
                 if (Après_midi && temperature >= tempDebutOuverture) {
                     objet.setetat(true);
@@ -106,15 +98,35 @@ public class Parametre_objetService {
                         specs.put("statut", "Aération progressive");
                     }
                 } else {
-                    // S'il fait moins de 17°C ou que ce n'est pas l'après-midi
                     objet.setetat(false);
                     specs.put("degre_ouverture", 0);
                     specs.put("statut", "Fermée");
                 }
             }
 
+            // Paramètres pour les objets "volet"
+            else if (nom.contains("volet")) {
+                if (Nuit) {
+                    specs.put("niveau_ouverture", 0);
+                    objet.setetat(false);
+                }
+                else if (Après_midi) {
+                    specs.put("niveau_ouverture", 100);
+                    objet.setetat(true);
+                }
+                else if (Soir) {
+                    specs.put("niveau_ouverture", 70);
+                    objet.setetat(true);
+                }
+                else {
+                    specs.put("niveau_ouverture", 30);
+                    objet.setetat(true);
+                }
+            }
+
+            // Paramètres pour les objets "climatisation"
             else if (nom.contains("clim")) {
-                if (temperature > 24.0) {
+                if (TemperatureInterieure > 24.0) {
                     objet.setetat(true);
                     specs.put("mode", "Froid");
                 } else {
@@ -123,32 +135,20 @@ public class Parametre_objetService {
                 }
             }
 
+            // Paramètres pour les objets "lumiere"
             else if (nom.contains("lumiere")) {
-                if (Matin) {
+                if (DetectionMouvement) {
                     objet.setetat(true);
-                    specs.put("luminosite", 30);
-                } else if (Après_midi) {
-                    objet.setetat(false);
-                    specs.put("luminosite", 0);
-                } else if (Soir) {
-                    objet.setetat(true);
-                    specs.put("luminosite", 100);
-                }
-                else {
+                    specs.put("luminosite", Nuit ? 30 : 100);
+                } else {
                     objet.setetat(false);
                     specs.put("luminosite", 0);
                 }
             }
-            System.out.println(specs);
 
-
-            // On sauvegarde le JSON dans l'objet
-            //objet.setDonneesJson(specs);
+            objet.setDonneesJson(specs);
         }
-        //System.out.println(heure);
-
-
-
+        System.out.println(heure);
         Parametre_objetRepository.saveAll(objets);
     }
 }
