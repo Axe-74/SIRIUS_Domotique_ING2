@@ -27,4 +27,9 @@ public class PieceController {
         return new ResponseEntity<>(pieceService.updatePiece(piece), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Piece> findPieceById(@PathVariable Long id) {
+        return new ResponseEntity<>(pieceService.findPieceById(id), HttpStatus.OK);
+    }
+
 }
