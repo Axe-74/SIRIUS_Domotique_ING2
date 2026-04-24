@@ -28,6 +28,9 @@ export default function ObjetList({ objets = [] }) {
                                     } else if (cle === "luminosite") {
                                         nomAffiche = "Luminosité";
                                         unite = " %";
+                                    } else if (cle === "niveau_ouverture") {
+                                        nomAffiche = "Niveau d'ouverture";
+                                        unite = " %";
                                     }
                                     return (
                                         <span key={cle} className="voir-plus-spec">
