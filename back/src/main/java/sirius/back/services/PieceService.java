@@ -21,4 +21,8 @@ public class PieceService {
         return pieceRepository.findAll();
     }
 
+    public Piece findPieceById(Long id) {
+        return pieceRepository.findById(id).orElse(null);
+    }
+
 }
