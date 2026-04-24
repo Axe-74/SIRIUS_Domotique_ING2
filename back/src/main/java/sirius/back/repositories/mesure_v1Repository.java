@@ -19,6 +19,9 @@ mesure_v1 findOldestMesure();
     @Query(value = "SELECT * FROM mesure_v1 WHERE id_capteur = :idCapteur ORDER BY date DESC LIMIT 1", nativeQuery = true)
     mesure_v1 findLatestMesureByCapteur(@Param("idCapteur") Integer idCapteur);
 
+    @Query(value = "SELECT * FROM mesure_v1 WHERE id_capteur = :idCapteur ORDER BY id_mesure DESC LIMIT 1", nativeQuery = true)
+    mesure_v1 findLatestMesureByCapteurOrder(@Param("idCapteur") Integer idCapteur);
+
 //@Query(value = "SELECT * FROM mesure_v1 WHERE idCapteur = ? ORDER BY id_mesure DESC LIMIT 1440;", nativeQuery = true)
 //List<mesure_v1> find1440LatestMesure(@Param("idCapteur") int idCapteur);
     List<mesure_v1> findFirst1440ByIdCapteurOrderByIdMesureDesc(int idCapteur);
