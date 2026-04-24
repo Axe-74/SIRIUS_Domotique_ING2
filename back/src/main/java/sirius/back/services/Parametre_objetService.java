@@ -44,7 +44,7 @@ public class Parametre_objetService {
 
         double TemperatureInterieure = (double) mesure_v1_interieur.getValeur();
         boolean DetectionMouvement = mesure_v1_mouvement.getValeur() != 0.0;
-
+        // Définit les conditions d'ouvertures des fenetres
         boolean conditionsOuvertureFenetre = Après_midi && temperature >= tempDebutOuverture && TemperatureInterieure >= 18.0;
 
         for (Parametre_objet objet : objets) {
@@ -53,6 +53,7 @@ public class Parametre_objetService {
 
             String nom = objet.getNom_objet().toLowerCase();
 
+            // Paramètres pour les objets "radiateur"
             if (nom.contains("radiateur")) {
                 if (temperature < température_cible && !conditionsOuvertureFenetre) {
                     double puissance = CalculTemperature.calculerPuissanceRadiateur(
@@ -78,6 +79,7 @@ public class Parametre_objetService {
                 }
             }
 
+            // Paramètres pour les objets "fenetre"
             else if (nom.contains("fenêtre")) {
                 if (Après_midi && temperature >= tempDebutOuverture) {
                     objet.setetat(true);
@@ -102,12 +104,27 @@ public class Parametre_objetService {
                 }
             }
 
+            // Paramètres pour les objets "volet"
             else if (nom.contains("volet")) {
-                if (Nuit) specs.put("niveau_ouverture", 0);
-                else if (Après_midi) specs.put("niveau_ouverture", 100);
-                else if (Soir) specs.put("niveau_ouverture", 70);
-                else specs.put("niveau_ouverture", 30);
+                if (Nuit) {
+                    specs.put("niveau_ouverture", 0);
+                    objet.setetat(false);
+                }
+                else if (Après_midi) {
+                    specs.put("niveau_ouverture", 100);
+                    objet.setetat(true);
+                }
+                else if (Soir) {
+                    specs.put("niveau_ouverture", 70);
+                    objet.setetat(true);
+                }
+                else {
+                    specs.put("niveau_ouverture", 30);
+                    objet.setetat(true);
+                }
             }
+
+            // Paramètres pour les objets "climatisation"
             else if (nom.contains("clim")) {
                 if (TemperatureInterieure > 24.0) {
                     objet.setetat(true);
@@ -117,6 +134,8 @@ public class Parametre_objetService {
                     specs.put("mode", "Arrêt");
                 }
             }
+
+            // Paramètres pour les objets "lumiere"
             else if (nom.contains("lumiere")) {
                 if (DetectionMouvement) {
                     objet.setetat(true);
