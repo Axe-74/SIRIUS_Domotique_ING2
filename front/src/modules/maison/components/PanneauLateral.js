@@ -1,10 +1,13 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 export default function PanneauLateral({infoPiece, capteurs_testpiece, RATIO}) {
     let dansInfoPiece;
 
     if (infoPiece !== undefined) {
+        let capteursDansPiece = capteurs_testpiece.filter(function (c) {
+            return c.id_piece === infoPiece.id_piece;
+        });
         dansInfoPiece = (
             <div className="conteneur-info-piece">
                 <h4> Infos pièces </h4>
@@ -37,6 +40,13 @@ export default function PanneauLateral({infoPiece, capteurs_testpiece, RATIO}) {
                             );
                         })}
                     </ul>
+                    <Link
+                        to={"/piece/" + infoPiece.id_piece}
+                        state={{ piece: infoPiece, capteurs: capteursDansPiece }}
+                        className="lien-voir-plus"
+                    >
+                        Voir plus...
+                    </Link>
                 </div>
             </div>
         );
