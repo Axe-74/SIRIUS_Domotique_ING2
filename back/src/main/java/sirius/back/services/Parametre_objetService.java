@@ -24,7 +24,7 @@ public class Parametre_objetService {
 
     @Transactional
     public void agirSurObjets(double temperature, LocalDateTime heure) {
-        List<Parametre_objet> objets = Parametre_objetRepository.findAll();
+        List<Parametre_objet> objets = Parametre_objetRepository.findObjetsAvecAutomatisationActive();
         mesure_v1 mesure_v1_interieur = mesure_v1Repository.findLatestMesureByCapteurOrder(11);
         mesure_v1 mesure_v1_mouvement = mesure_v1Repository.findLatestMesureByCapteurOrder(3);
 
