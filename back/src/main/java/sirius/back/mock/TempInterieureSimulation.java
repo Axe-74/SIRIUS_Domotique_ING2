@@ -86,11 +86,11 @@ public class TempInterieureSimulation {
             int idCapteurInterieur = config.getIdCapteurTemp() + 10;
 
             // 2. Récupération des obets dans la pièce
-            List<Parametre_objet> objetsPiece = null;
-            Capteur capteurInt = capteurRepository.findById(idCapteurInterieur).orElse(null);
-            if (capteurInt != null && capteurInt.getPiece() != null) {
-                objetsPiece = objetRepository.findByPieces(capteurInt.getPiece());
-            }
+//            List<Parametre_objet> objetsPiece = null;
+//            Capteur capteurInt = capteurRepository.findById(idCapteurInterieur).orElse(null);
+//            if (capteurInt != null && capteurInt.getPiece() != null) {
+//                objetsPiece = objetRepository.findByPieces(capteurInt.getPiece());
+//            }
 
             if (tempActuelle == null) {
                 int heure = heureFake.getHour();
@@ -122,9 +122,11 @@ public class TempInterieureSimulation {
                 double tauxOuvertureFenetre = 0.0;
                 boolean radiateurTrouve = false;
 
-                if (objetsPiece != null) {
-                    for (Parametre_objet obj : objetsPiece) {
+                Capteur capteurInt = capteurRepository.findById(idCapteurInterieur).orElse(null);
+                if (capteurInt != null && capteurInt.getPiece() != null) {
+                    List<Parametre_objet> objetsPiece = objetRepository.findByPieces(capteurInt.getPiece());
 
+                    for (Parametre_objet obj : objetsPiece) {
                         if (!obj.getetat()) {
                             continue;
                         }
