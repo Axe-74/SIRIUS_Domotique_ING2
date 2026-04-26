@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchMesureCapteur, fetchPieceById } from '../api/maisonApi';
 import CapteursListe from '../components/CapteursListe';
 import ObjetsListe from '../components/ObjetsListe';
-import '../../../styles/Maison.css';
+import '../styles/Maison.css';
 
 export default function VoirPlus() {
     const location = useLocation();
