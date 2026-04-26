@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchMesureCapteur, fetchPieceById } from '../api/maisonApi';
 import CapteursListe from '../components/CapteursListe';
 import ObjetsListe from '../components/ObjetsListe';
-import '../../../styles/Maison.css';
+import '../styles/Maison.css';
 
 export default function VoirPlus() {
     const location = useLocation();
@@ -13,9 +13,12 @@ export default function VoirPlus() {
     const [capteurs, setCapteurs] = useState(location.state ? location.state.capteurs : []);
     const [meteo, setMeteo] = useState({ heure: "", temp: "" });
 
+    const [historiqueHeures, setHistoriqueHeures] = useState({});
+    const ancienEtatObjets = useRef([]);
+
     // meteo et horloge depuis capteur
-    useEffect(() => {
-        const rafraichirMeteo = () => {
+    useEffect(function () {
+        const rafraichirMeteo = function () {
             fetchMesureCapteur(2).then(function(data) {
                 if (data && data.date) {
                     setMeteo({
@@ -51,6 +54,29 @@ export default function VoirPlus() {
         }
     }, [infoPiece]);
 
+    useEffect(function() {
+        if (infoPiece && infoPiece.objets) {
+            let changement = false;
+            let copieHistorique = { ...historiqueHeures };
+
+            infoPiece.objets.forEach(function(obj) {
+                // ancien etat
+                let ancien = ancienEtatObjets.current.find(o => o.id_objet === obj.id_objet);
+
+                // si l'etat change alors on garde l'heure
+                if (!ancien || ancien.etat !== obj.etat) {
+                    copieHistorique[obj.id_objet] = meteo.heure;
+                    changement = true;
+                }
+            });
+
+            if (changement) {
+                setHistoriqueHeures(copieHistorique);
+            }
+            ancienEtatObjets.current = infoPiece.objets;
+        }
+    }, [infoPiece, meteo.heure]);
+
     function clicRetour() {
         navigate('/maison');
     }
@@ -76,7 +102,7 @@ export default function VoirPlus() {
 
             <div className="voir-plus-grid">
                 <CapteursListe capteurs={capteurs} />
-                <ObjetsListe objets={infoPiece.objets} />
+                <ObjetsListe objets={infoPiece.objets} historiqueHeures={historiqueHeures}/>
             </div>
 
             <div className="voir-plus-horloge">

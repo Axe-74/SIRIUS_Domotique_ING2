@@ -1,4 +1,4 @@
-export default function ObjetList({ objets = [] }) {
+export default function ObjetList({ objets = [], historiqueHeures = {} }) {
     const sorted = [...objets].sort((a, b) => a.id_objet - b.id_objet);
 
     return (
@@ -6,6 +6,8 @@ export default function ObjetList({ objets = [] }) {
             <h2>Objets</h2>
             <ul className="voir-plus-list">
                 {sorted.map(function(o) {
+                    let heureChangement = historiqueHeures[o.id_objet];
+                    let texteHeure = heureChangement ? " (depuis " + heureChangement + ")" : "";
                     return (
                         <li key={o.id_objet}>
                             <div className="voir-plus-item-info">
@@ -41,6 +43,7 @@ export default function ObjetList({ objets = [] }) {
                             </div>
                             <span className={o.etat ? "etat-on" : "etat-off"}>
                                 {o.etat ? "ON" : "OFF"}
+                                {texteHeure}
                             </span>
                         </li>
                     );

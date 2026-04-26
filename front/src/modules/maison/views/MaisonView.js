@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Text } from 'react-konva';
-import '../../../styles/Maison.css';
+import '../styles/Maison.css';
 
 import { fetchPieces, fetchCapteurs, sauvegarderPosition } from '../api/maisonApi';
 
