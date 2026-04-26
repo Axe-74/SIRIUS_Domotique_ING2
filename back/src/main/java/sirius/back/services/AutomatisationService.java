@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sirius.back.repositories.Parametre_objetRepository;
 import sirius.back.models.Parametre_objet;
+import sirius.back.repositories.mesure_v1Repository;
 
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class AutomatisationService {
     @Autowired
     private AutomatisationRepository automatisationRepository;
     @Autowired
-    private mesure_v1Service mesure_v1Service;
+    private mesure_v1Repository mesure_v1Service;
     @Autowired
     private Parametre_objetRepository parametreObjetRepository;
 
@@ -40,7 +41,7 @@ public class AutomatisationService {
     @Transactional
     public void verifierEtMettreAJourAutomatisation() {
         List<Automatisation> autoall = automatisationRepository.findAllAutomatisationByDate();
-        mesure_v1 dernierReleve = mesure_v1Service.findOldestMesure();
+        mesure_v1 dernierReleve = mesure_v1Service.findLatestMesureByCapteurOrder(2);
 
         // Sécurité si aucune automatisation ou valeur en base
         if (dernierReleve == null || autoall == null) {
