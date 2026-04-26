@@ -75,7 +75,7 @@ export default function VoirPlus() {
             }
             ancienEtatObjets.current = infoPiece.objets;
         }
-    }, [infoPiece, meteo.heure]);
+    }, [infoPiece, meteo.heure, historiqueHeures]);
 
     function clicRetour() {
         navigate('/maison');
