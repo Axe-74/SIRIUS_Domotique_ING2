@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import sirius.back.models.mesure_v1;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Repository
 public interface mesure_v1Repository extends JpaRepository<mesure_v1, Long> {
@@ -25,4 +26,6 @@ public interface mesure_v1Repository extends JpaRepository<mesure_v1, Long> {
 //@Query(value = "SELECT * FROM mesure_v1 WHERE idCapteur = ? ORDER BY id_mesure DESC LIMIT 1440;", nativeQuery = true)
 //List<mesure_v1> find1440LatestMesure(@Param("idCapteur") int idCapteur);
     List<mesure_v1> findFirst1440ByIdCapteurOrderByIdMesureDesc(int idCapteur);
+
+    mesure_v1 findTopByIdCapteurAndDateLessThanEqualOrderByDateDesc(int idCapteur, LocalDateTime date);
 }

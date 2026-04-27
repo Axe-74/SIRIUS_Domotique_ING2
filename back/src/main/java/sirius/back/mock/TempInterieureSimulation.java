@@ -114,8 +114,26 @@ public class TempInterieureSimulation {
 
             for (int i = 0; i < nbMesures; i++) {
 
-                mesure_v1 lastMesure = mesureService.findLatestMesureByCapteur(idCapteurExterieur);
-                tempExterieure = (double) lastMesure.getValeur();
+                mesure_v1 mesureExt = mesureService.findMesureByCapteurAndDate(idCapteurExterieur, heureFake);
+
+                if (mesureExt != null) {
+                    tempExterieure = (double) mesureExt.getValeur();
+                } else {
+                    if (tempExterieure == null) {
+                        int heureBoucle = heureFake.getHour();
+
+                        if (heureBoucle >= 0 && heureBoucle < 6) { // Nuit
+                            tempExterieure = config.getTempCible1();
+                        } else if (heureBoucle >= 6 && heureBoucle < 12) { // Matin
+                            tempExterieure = config.getTempCible2();
+                        } else if (heureBoucle >= 12 && heureBoucle < 19) { // Aprem
+                            tempExterieure = config.getTempCible3();
+                        } else { // Soirée
+                            tempExterieure = config.getTempCible4();
+                        }
+                        System.err.println("Aucune mesure extérieure trouvée à " + heureFake );
+                    }
+                }
 
                 // 4. Analyse des objets
                 Double tempCibleRadiateur = null;
