@@ -3,153 +3,142 @@ package sirius.back.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sirius.back.models.Automatisation;
 import sirius.back.models.Parametre_objet;
 import sirius.back.models.mesure_v1;
+import sirius.back.repositories.AutomatisationRepository;
 import sirius.back.repositories.Parametre_objetRepository;
 import sirius.back.repositories.mesure_v1Repository;
 import sirius.back.utils.fonctionpure.CalculTemperature;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class Parametre_objetService {
 
     @Autowired
-    private Parametre_objetRepository Parametre_objetRepository;
+    private Parametre_objetRepository parametre_objetRepository;
     @Autowired
     private mesure_v1Repository mesure_v1Repository;
+    @Autowired
+    private AutomatisationRepository automatisationRepository;
 
     @Transactional
-    public void agirSurObjets(double temperature, LocalDateTime heure) {
-        List<Parametre_objet> objets = Parametre_objetRepository.findObjetsAvecAutomatisationActive();
-        mesure_v1 mesure_v1_interieur = mesure_v1Repository.findLatestMesureByCapteurOrder(11);
-        mesure_v1 mesure_v1_mouvement = mesure_v1Repository.findLatestMesureByCapteurOrder(3);
+    public void agirSurObjets(double temperatureExterieure, LocalDateTime heure) {
 
-        // --- Paramètres temporels ---
-        boolean Nuit = (heure.getHour() < 7 || heure.getHour() >= 21);
-        boolean Matin = (heure.getHour() >= 7 && heure.getHour() < 12);
-        boolean Après_midi = (heure.getHour() >= 12 && heure.getHour() < 19);
-        boolean Soir = (heure.getHour() >= 19 && heure.getHour() < 21);
+        List<Automatisation> automatisations = automatisationRepository.findAll();
+        mesure_v1 mesureInterieure = mesure_v1Repository.findLatestMesureByCapteurOrder(11);
+        mesure_v1 mesureMouvement = mesure_v1Repository.findLatestMesureByCapteurOrder(3);
 
-        // --- Paramètres physiques ---
-        double Volume_Salon = 4.5 * 3.6 * 2.2;
-        int température_cible = 19;
-        double Coefficient_de_deperdition = 1.2;
-        double tempDebutOuverture = 17.0;
-        double tempMaxOuverture = 22.0;
-        int angleMax = 45;
+        double tempInterieure = (mesureInterieure != null) ? (double) mesureInterieure.getValeur() : 20.0;
+        boolean detectionMouvement = (mesureMouvement != null && mesureMouvement.getValeur() != 0.0);
 
-        double TemperatureInterieure = (double) mesure_v1_interieur.getValeur();
-        boolean DetectionMouvement = mesure_v1_mouvement.getValeur() != 0.0;
-        // Définit les conditions d'ouvertures des fenetres
-        boolean conditionsOuvertureFenetre = Après_midi && temperature >= tempDebutOuverture && TemperatureInterieure >= 18.0;
+        int heureActuelle = heure.getHour();
+        Set<Parametre_objet> objetsModifies = new HashSet<>();
+        Set<Integer> objetsTraitesDansPlage = new HashSet<>();
+        for (Automatisation auto : automatisations) {
+            if (!auto.getetat()) continue;
 
-        for (Parametre_objet objet : objets) {
-            Map<String, Object> specs = objet.getDonneesJson();
-            if (specs == null) specs = new HashMap<>();
+            int HeureDebut = auto.getHeureDebut();
+            int HeureFin = auto.getHeureFin();
+            boolean estDansPlage = (HeureDebut <= HeureFin) ?
+                    (heureActuelle >= HeureDebut && heureActuelle < HeureFin) :
+                    (heureActuelle >= HeureDebut || heureActuelle < HeureFin);
 
-            String nom = objet.getNom_objet().toLowerCase();
+            if (!estDansPlage) continue;
 
-            // Paramètres pour les objets "radiateur"
-            if (nom.contains("radiateur")) {
-                if (temperature < température_cible && !conditionsOuvertureFenetre) {
-                    double puissance = CalculTemperature.calculerPuissanceRadiateur(
-                            temperature,
-                            température_cible,
-                            Volume_Salon,
-                            Coefficient_de_deperdition
-                    );
+            double consigne = auto.getValeurConsigne();
 
-                    objet.setetat(true);
-                    specs.put("puissance_watts", puissance);
-                    specs.put("statut", "Allume");
+            for (Parametre_objet objet : auto.getObjetsRelies()) {
 
-                    if (Nuit) specs.put("temperature", 19);
-                    else if (Matin) specs.put("temperature", 20);
-                    else if (Soir) specs.put("temperature", 21);
-                    else specs.put("temperature", 15);
+                if (objetsTraitesDansPlage.contains(objet.getId_objet())) continue;
 
-                } else {
-                    objet.setetat(false);
-                    specs.put("puissance_watts", 0);
-                    specs.put("statut", "Eteint");
-                }
-            }
+                Map<String, Object> specs = objet.getDonneesJson();
+                if (specs == null) specs = new HashMap<>();
+                String nom = objet.getNom_objet().toLowerCase();
 
-            // Paramètres pour les objets "fenetre"
-            else if (nom.contains("fenêtre")) {
-                if (Après_midi && temperature >= tempDebutOuverture) {
-                    objet.setetat(true);
+                //  Radiateur
+                if (nom.contains("radiateur")) {
+                    double vol = specs.containsKey("volume_piece") ? Double.parseDouble(specs.get("volume_piece").toString()) : 35.0;
+                    double coeff = specs.containsKey("coefficient_isolation") ? Double.parseDouble(specs.get("coefficient_isolation").toString()) : 1.2;
 
-                    if (temperature >= tempMaxOuverture) {
-                        specs.put("degre_ouverture", angleMax);
-                        specs.put("statut", "Aération maximale");
+                    if (consigne > 0 && tempInterieure < consigne) {
+                        double puissance = CalculTemperature.calculerPuissanceRadiateur(tempInterieure, consigne, vol, coeff);
+                        objet.setetat(true);
+                        specs.put("puissance_watts", puissance);
+                        specs.put("temperature", consigne);
                     } else {
-                        double plageTemperature = tempMaxOuverture - tempDebutOuverture;
-                        double depassement = temperature - tempDebutOuverture;
-                        double ratioOuverture = depassement / plageTemperature;
-
-                        int ouverture = (int) Math.round(ratioOuverture * angleMax);
-
-                        specs.put("degre_ouverture", ouverture);
-                        specs.put("statut", "Aération progressive");
+                        objet.setetat(false);
+                        specs.put("puissance_watts", 0);
+                        specs.put("temperature", consigne);
                     }
-                } else {
-                    objet.setetat(false);
-                    specs.put("degre_ouverture", 0);
-                    specs.put("statut", "Fermée");
                 }
-            }
+                // Fenetre
+                else if (nom.contains("fenêtre") || nom.contains("fenetre")) {
+                    double tempDebutOuverture = specs.containsKey("temp_debut_ouverture") ? Double.parseDouble(specs.get("temp_debut_ouverture").toString()) : 15.0;
+                    double tempMaxOuverture = specs.containsKey("temp_max_ouverture") ? Double.parseDouble(specs.get("temp_max_ouverture").toString()) : 30.0;
 
-            // Paramètres pour les objets "volet"
-            else if (nom.contains("volet")) {
-                if (Nuit) {
-                    specs.put("niveau_ouverture", 0);
-                    objet.setetat(false);
-                }
-                else if (Après_midi) {
-                    specs.put("niveau_ouverture", 100);
-                    objet.setetat(true);
-                }
-                else if (Soir) {
-                    specs.put("niveau_ouverture", 70);
-                    objet.setetat(true);
-                }
-                else {
-                    specs.put("niveau_ouverture", 30);
-                    objet.setetat(true);
-                }
-            }
 
-            // Paramètres pour les objets "climatisation"
-            else if (nom.contains("clim")) {
-                if (TemperatureInterieure > 24.0) {
-                    objet.setetat(true);
-                    specs.put("mode", "Froid");
-                } else {
-                    objet.setetat(false);
-                    specs.put("mode", "Arrêt");
+                    if (consigne > 0 && temperatureExterieure >= tempDebutOuverture && temperatureExterieure <= tempMaxOuverture) {
+                        objet.setetat(true);
+                        specs.put("degre_ouverture", consigne);
+                    } else {
+                        objet.setetat(false);
+                        specs.put("degre_ouverture", 0);
+                    }
                 }
-            }
-
-            // Paramètres pour les objets "lumiere"
-            else if (nom.contains("lumiere")) {
-                if (DetectionMouvement) {
-                    objet.setetat(true);
-                    specs.put("luminosite", Nuit ? 30 : 100);
-                } else {
-                    objet.setetat(false);
-                    specs.put("luminosite", 0);
+                //  Lumiere
+                else if (nom.contains("lumiere")) {
+                    if (consigne > 0 && detectionMouvement) {
+                        objet.setetat(true);
+                        specs.put("luminosite", consigne);
+                    } else {
+                        objet.setetat(false);
+                        specs.put("luminosite", 0);
+                    }
                 }
-            }
+                // Volet
+                else if (nom.contains("volet")) {
+                    if (consigne > 0) {
+                        objet.setetat(true);
+                        specs.put("niveau_ouverture", consigne);
+                    } else {
+                        objet.setetat(false);
+                        specs.put("niveau_ouverture", 0);
+                    }
+                }
 
-            objet.setDonneesJson(specs);
+                objet.setDonneesJson(specs);
+                objetsModifies.add(objet);
+                objetsTraitesDansPlage.add(objet.getId_objet());
+            }
         }
-        System.out.println(heure);
-        Parametre_objetRepository.saveAll(objets);
+
+        for (Automatisation auto : automatisations) {
+            if (!auto.getetat()) continue;
+
+            for (Parametre_objet objet : auto.getObjetsRelies()) {
+
+                if (!objetsTraitesDansPlage.contains(objet.getId_objet())) {
+
+                    Map<String, Object> specs = objet.getDonneesJson();
+                    if (specs == null) specs = new HashMap<>();
+                    String nom = objet.getNom_objet().toLowerCase();
+
+                    objet.setetat(false);
+                    if (nom.contains("radiateur")) specs.put("puissance_watts", 0);
+                    else if (nom.contains("fenêtre") || nom.contains("fenetre")) specs.put("degre_ouverture", 0);
+                    else if (nom.contains("lumiere")) specs.put("luminosite", 0);
+                    else if (nom.contains("volet")) specs.put("niveau_ouverture", 0);
+
+                    objet.setDonneesJson(specs);
+                    objetsModifies.add(objet);
+                    objetsTraitesDansPlage.add(objet.getId_objet());
+                }
+            }
+        }
+
+        parametre_objetRepository.saveAll(objetsModifies);
     }
 }
-

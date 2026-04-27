@@ -14,12 +14,12 @@ public class analyse_request implements CommandLineRunner {
     @Autowired
     private AutomatisationService automatisationService;
 
-    @Scheduled(fixedRate = 100, initialDelay = 0)
+    //@Scheduled(fixedRate = 100, initialDelay = 0)
     public void run(String... args) throws Exception {
 
         try{
             automatisationService.verifierEtMettreAJourAutomatisation();
-            automatisationService.MettreAJourObjetsAutomatisation();
+            //automatisationService.MettreAJourObjetsAutomatisation();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

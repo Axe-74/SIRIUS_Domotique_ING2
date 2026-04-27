@@ -27,6 +27,15 @@ public class Automatisation {
     @Column(name = "seuil_de_declenchement")
     private double seuilDeDeclenchement;
 
+    @Column(name = "heure_debut")
+    private Integer heureDebut;
+
+    @Column(name = "heure_fin")
+    private Integer heureFin;
+
+    @Column(name = "valeur_consigne")
+    private Double valeurConsigne;
+
     @ManyToMany()
     @JsonIgnore
     @JoinTable(
