@@ -35,8 +35,8 @@ public class TempInterieureSimulation {
     private Double tempExterieure = null;
 
     // Coefficients influence variables sur temp intérieure
-    private final double COEF_PUISSANCE_RADIATEUR = 0.05;
-    private final double COEF_INFLUENCE_EXTERIEURE_MAX = 0.1;
+    private final double COEF_PUISSANCE_RADIATEUR = 0.025;
+    private final double COEF_INFLUENCE_EXTERIEURE_MAX = 0.05;
     private final double COEF_ISOLATION_FERMEE = 0.001;
 
     public double calculerNouvelleTemperature(Double tempCibleRadiateur, double tauxOuvertureFenetre, double tempActuelle, double tempExterieure) {
