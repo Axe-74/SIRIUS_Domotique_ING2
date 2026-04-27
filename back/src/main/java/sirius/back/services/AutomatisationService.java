@@ -83,26 +83,26 @@ public class AutomatisationService {
         }
     }
 
-    @Transactional
-    public void MettreAJourObjetsAutomatisation() {
-        List<Automatisation> autoall = automatisationRepository.findAllAutomatisationByDate();
-        // On parcourt toutes les automatisations
-        for (Automatisation auto : autoall) {
-            List<Parametre_objet> objets = auto.getObjetsRelies();
-            if (auto.getEtats().equals(Boolean.TRUE)) {
-                for (Parametre_objet objet : objets) {
-                    objet.setetat(true);
-                    parametreObjetRepository.save(objet);
-                    //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été activé !");
-                }
-            } else {
-                for (Parametre_objet objet : objets) {
-                    objet.setetat(false);
-                    parametreObjetRepository.save(objet);
-                    //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été désactivé !");
-                }
-            }
-        }
+//    @Transactional
+//    public void MettreAJourObjetsAutomatisation() {
+//        List<Automatisation> autoall = automatisationRepository.findAllAutomatisationByDate();
+//        // On parcourt toutes les automatisations
+//        for (Automatisation auto : autoall) {
+//            List<Parametre_objet> objets = auto.getObjetsRelies();
+//            if (auto.getEtats().equals(Boolean.TRUE)) {
+//                for (Parametre_objet objet : objets) {
+//                    objet.setetat(true);
+//                    parametreObjetRepository.save(objet);
+//                    //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été activé !");
+//                }
+//            } else {
+//                for (Parametre_objet objet : objets) {
+//                    objet.setetat(false);
+//                    parametreObjetRepository.save(objet);
+//                    //System.out.println(" -> L'objet " + objet.getNom_objet() + " a été désactivé !");
+//                }
+//            }
+//        }
     }
-}
+
 

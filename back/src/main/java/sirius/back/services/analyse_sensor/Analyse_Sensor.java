@@ -21,20 +21,20 @@ public class Analyse_Sensor implements CommandLineRunner {
             System.out.println("Demérage de l'analyse de température");
 
             while (true) {
-                try {
-                    automatisationService.verifierEtMettreAJourAutomatisation();
-                    automatisationService.MettreAJourObjetsAutomatisation();
-                    TimeUnit.SECONDS.sleep(5); //temps de refresh de la methode
-                } catch (InterruptedException e) {
-                    System.err.println("Arrêt de la boucle d'analyse de la température");
-                    Thread.currentThread().interrupt();
-                    break;
-                } catch (Exception e) {
-                    System.err.println("Erreur dans la boucle d'analyse de température : " + e.getMessage());
-                    e.printStackTrace();
-
-                    try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException ex) {}
-                }
+//                try {
+//                    //automatisationService.verifierEtMettreAJourAutomatisation();
+//                    //automatisationService.MettreAJourObjetsAutomatisation();
+//                    TimeUnit.SECONDS.sleep(5); //temps de refresh de la methode
+//                } catch (InterruptedException e) {
+//                    System.err.println("Arrêt de la boucle d'analyse de la température");
+//                    Thread.currentThread().interrupt();
+//                    break;
+//                } catch (Exception e) {
+//                    System.err.println("Erreur dans la boucle d'analyse de température : " + e.getMessage());
+//                    e.printStackTrace();
+//
+//                    try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException ex) {}
+//                }
             }
         }).start();
     }
