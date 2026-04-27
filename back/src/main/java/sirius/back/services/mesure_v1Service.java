@@ -5,6 +5,7 @@ import sirius.back.repositories.mesure_v1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,5 +39,9 @@ public class mesure_v1Service {
 
     public mesure_v1 findLatestMesureByCapteur(int idCapteur) {
         return mesureRepository.findLatestMesureByCapteur(idCapteur);
+    }
+
+    public mesure_v1 findMesureByCapteurAndDate(int idCapteur, LocalDateTime date) {
+        return mesureRepository.findTopByIdCapteurAndDateLessThanEqualOrderByDateDesc(idCapteur, date);
     }
 }
