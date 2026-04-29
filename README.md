@@ -92,11 +92,15 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
   * US3 - En tant qu'utilisateur, je veux voir un message d'information clair si aucune pièce n'a encore été configurée, afin de ne pas penser que l'application a crash
   * US4 - En tant qu'utilisateur, je veux pouvoir voir l'état actuel d'un objet via une icone d'une pièce afin de savoir s'il est ON ou OFF
   * US5 - En tant qu'utilisateur, je veux que l'état des pièces soient mise à jour en temps réel afin d'être m'assurer que les informations que je vois soient vraies
-  * US6 - En tant qu'utilisateur, je veux qu'un panneau latéral s'ouvre au clic sur une pièce, afin de préparer l'affichage des éléments sans quitter totalement la vue carte
-  * US7 - En tant qu'utilisateur, je veux voir la liste des noms des objets présents dans la pièce sélectionnée, afin de savoir ce qui y est installé
-  * US8 - En tant qu'utilisateur, je veux voir l'état actuel (ex: "Allumé", "Fermé") à côté de chaque nom dans la liste, afin de vérifier le statut individuel de chaque objet
-  * US9 - En tant qu'utilisateur, je veux consulter l'intensité de fonctionnement d'un objet, afin de me rendre compte de son utilisation
-  * US10 - En tant qu'utilisateur, je veux voir la dernière mesure d'un capteur afin de savoir si je dois modifier sa sensibilité
+  * US6 - En tant qu'utilisateur, je veux sauvegarder la position des pièces que j'ai organiser dans la visualisation afin de garder le même agencement quand je reviens sur mon application
+  * US7 - En tant qu'utilisateur, je veux sélectionner un étage de ma maison afin que la visualisation n'affiche que les pièces de l'étage que j'ai choisis
+  * US8 - En tant qu'utilisateur, je veux qu'un panneau latéral s'ouvre au clic sur une pièce, afin de préparer l'affichage des éléments sans quitter totalement la vue carte
+  * US9 - En tant qu'utilisateur, je veux voir la liste des noms des objets présents dans la pièce sélectionnée, afin de savoir ce qui y est installé
+  * US10 - En tant qu'utilisateur, je veux voir l'état actuel (ex: "Allumé", "Fermé") à côté de chaque nom dans la liste, afin de vérifier le statut individuel de chaque objet
+  * US11 - En tant qu'utilisateur, je veux cliquer sur un lien "Voir plus", afin d'ouvrir une autre page contenant plus de détails sur les objets de la pièce
+  * US12 - En tant qu'utilisateur, je veux consulter l'intensité de fonctionnement d'un objet, afin de me rendre compte de son utilisation
+  * US13 - En tant qu'utilisateur, je veux voir l'heure et la température (intérieure ou extérieure) dans le zoom d'une pièce, afin de situer les mesures dans le temps
+  * US14 - En tant qu'utilisateur, je veux voir l'heure à laquelle un objet à changé d'état entre parenthèse à coté des états des objets, afin de savoir depuis quand un objet est actif/inactif
  
 
   # Documentation
