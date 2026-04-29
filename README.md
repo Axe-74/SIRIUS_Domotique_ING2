@@ -77,8 +77,11 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
   * WI7 — Supprimer une automatisation
   * WI8 — Gestion des profils de simulation (Presets)
   * WI9 — Utiliser un modèle d’automatisation
-  * WI10 — Parcourir les modèles disponibles
-  * WI11 — Personnaliser un modèle d’automatisation
+  * WI10 - Création d’un mock de contrôle des objets domotiques 
+  * WI11 - Création d’un mock de contrôle des objets domotiques 
+  * WI12 - Création d’un mock de contrôle des objets domotiques 
+  * WI13 — Création d’un mock de contrôle des objets domotiques 
+  * WI14 — Création d’un mock de contrôle des objets domotiques 
 
  
 * **Tom DA ROCHA**
@@ -94,3 +97,89 @@ Ce projet repose sur une architecture 3-tiers standard et robuste.
   * US8 - En tant qu'utilisateur, je veux voir l'état actuel (ex: "Allumé", "Fermé") à côté de chaque nom dans la liste, afin de vérifier le statut individuel de chaque objet
   * US9 - En tant qu'utilisateur, je veux consulter l'intensité de fonctionnement d'un objet, afin de me rendre compte de son utilisation
   * US10 - En tant qu'utilisateur, je veux voir la dernière mesure d'un capteur afin de savoir si je dois modifier sa sensibilité
+ 
+
+  # Documentation
+
+Topologie Réseau (Architecture)
+
+L'accès à notre infrastructure est sécurisé et nécessite d'être connecté au réseau de l'école (via le VPN EPISEN).
+Au cœur de cette architecture se trouve un pare-feu OPNsense, qui agit comme une passerelle de sécurité entre le réseau global de l'école (WAN) et notre sous-réseau privé isolé (LAN Domotique en 192.168.1.0/24).
+
+Ce réseau privé héberge plusieurs machines virtuelles dédiées à des rôles spécifiques :
+
+Environnement de Production : Séparé en trois instances distinctes pour le frontend (Prod FrontEnd), le backend (Prod API) et la base de données (Prod DB).
+
+Environnement d'Intégration : Une machine dédiée (Integration) regroupant le front et l'API pour valider les développements avant la mise en production.
+
+CI/CD : Deux Runners GitHub Actions chargés d'exécuter nos pipelines de déploiement continu de manière autonome au sein du réseau privé.
+
+ * Schéma de la topologie réseau
+
+flowchart LR
+    USER[Utilisateur] --> VPN
+    
+    VPN[VPN EPISEN<br>172.31.240.0/21] --> WAN[LAN EPISEN<br>172.31.248.0/21]
+
+    WAN <--> OPNsense[OPNsense<br>172.31.254.38<br>192.168.1.1]
+
+    subgraph LAN[LAN Domotique 192.168.1.0/24]
+        API[Prod API<br>192.168.1.2]
+        DB[Prod DB<br>192.168.1.3]
+        FE[Prod FrontEnd<br>192.168.1.4]
+        INT[Integration<br>192.168.1.5]
+        RUN1[Github Actions Runner 1<br>192.168.1.6]
+        RUN2[Github Actions Runner 2<br>192.168.1.7]
+    end
+
+    OPNsense <--> API
+    OPNsense <--> DB
+    OPNsense <--> FE
+    OPNsense <--> INT
+    OPNsense <--> RUN1
+    OPNsense <--> RUN2
+
+Routage et Reverse proxy (Nginx)
+
+Pour simplifier l'accès aux différents services sans exposer directement les ports de nos machines internes, nous utilisons Nginx (configuré sur le routeur OPNsense) comme reverse proxy. Il se charge de rediriger le trafic entrant vers la bonne machine en fonction de l'URL demandée :
+
+Pour les Utilisateurs finaux :
+
+L'URL principale (domotique.inside.esipe-creteil.info) pointe vers l'interface utilisateur en production.
+
+Le chemin /api redirige de manière transparente vers le backend de production.
+
+Pour les Développeurs :
+
+Le sous-domaine inte.* permet d'accéder à l'environnement de test (Frontend et API d'intégration).
+
+Le sous-domaine opnsense.* permet d'accéder à l'interface d'administration de notre pare-feu/routeur en toute sécurité.
+
+ * Schéma de routage et du reverse proxy
+
+flowchart LR
+    USER[Utilisateur] --> URL1
+    USER --> URL2
+    DEV[Développeurs] --> URL3
+    DEV --> URL4
+    DEV --> URL5
+
+    subgraph OPNsense
+      subgraph Nginx[Nginx<br>172.31.254.38:80]
+          URL1[domotique.inside.esipe-creteil.info]
+          URL2[domotique.inside.esipe-creteil.info/api]
+          URL3[inte.domotique.inside.esipe-creteil.info]
+          URL4[inte.domotique.inside.esipe-creteil.info/api]
+          URL5[opnsense.domotique.inside.esipe-creteil.info]
+      end
+    end
+
+    URL1 -- 192.168.1.4:80 --> FE[Prod FrontEnd]
+    URL2 -- 192.168.1.2:8080 --> API[Prod API]
+
+    URL3 -- 192.168.1.5:80 --> INT[Integration]
+    URL4 -- 192.168.1.5:8080 --> INT
+
+    URL5 -- 192.168.1.1:8000 --> OPN[OPNsense]
+
+
