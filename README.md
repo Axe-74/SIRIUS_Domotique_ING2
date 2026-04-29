@@ -115,7 +115,7 @@ Environnement d'Intégration : Une machine dédiée (Integration) regroupant le 
 CI/CD : Deux Runners GitHub Actions chargés d'exécuter nos pipelines de déploiement continu de manière autonome au sein du réseau privé.
 
  * Schéma de la topologie réseau
-
+```mermaid
 flowchart LR
     USER[Utilisateur] --> VPN
     
@@ -138,6 +138,7 @@ flowchart LR
     OPNsense <--> INT
     OPNsense <--> RUN1
     OPNsense <--> RUN2
+```
 
 Routage et Reverse proxy (Nginx)
 
@@ -157,6 +158,7 @@ Le sous-domaine opnsense.* permet d'accéder à l'interface d'administration de 
 
  * Schéma de routage et du reverse proxy
 
+```mermaid
 flowchart LR
     USER[Utilisateur] --> URL1
     USER --> URL2
@@ -165,7 +167,7 @@ flowchart LR
     DEV --> URL5
 
     subgraph OPNsense
-      subgraph Nginx[Nginx<br>172.31.254.38:80]
+      subgraph Nginx [Nginx : 172.31.254.38]
           URL1[domotique.inside.esipe-creteil.info]
           URL2[domotique.inside.esipe-creteil.info/api]
           URL3[inte.domotique.inside.esipe-creteil.info]
@@ -174,12 +176,12 @@ flowchart LR
       end
     end
 
-    URL1 -- 192.168.1.4:80 --> FE[Prod FrontEnd]
-    URL2 -- 192.168.1.2:8080 --> API[Prod API]
+    URL1 ---->|"192.168.1.4:80"| FE[Prod FrontEnd]
+    URL2 ---->|"192.168.1.2:8080"| API[Prod API]
 
-    URL3 -- 192.168.1.5:80 --> INT[Integration]
-    URL4 -- 192.168.1.5:8080 --> INT
+    URL3 ---->|"192.168.1.5:80"| INT[Integration]
+    URL4 ---->|"192.168.1.5:8080"| INT
 
-    URL5 -- 192.168.1.1:8000 --> OPN[OPNsense]
-
+    URL5 ---->|"192.168.1.1:8000"| OPN[OPNsense]
+```
 
